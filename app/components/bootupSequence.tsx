@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const BootUpSequence = () => {
  const [text, setText] = useState('');
- const fullText = 'Boooting up';
+ const fullText = 'Booting up';
 
  useEffect(() => {
   let i = 0;

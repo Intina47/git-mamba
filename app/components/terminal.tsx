@@ -37,7 +37,8 @@ const TerminalLayout = () => {
 
  useInterval(() => {
   setBlink(!blink);
- }, 500);
+ }
+ , 500);
  // handle user input
  const handleInputChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
   setInputValue(e.target.value);
@@ -54,7 +55,7 @@ const TerminalLayout = () => {
   // clear the input field
   setInputValue('');
  };
- // Function to format the user count as "ttysXXX"
+ // Function to format the user count as "imnssxxx"
  const formatUserCount = () => {
   const paddedCount = String(userCount).padStart(3, '0');
   return `imnss${paddedCount}`;
@@ -85,7 +86,7 @@ const TerminalLayout = () => {
       </div>
 
       <form onSubmit={handleInputSubmit}>
-       <div className="flex items-center">
+       <div className="flex flex-col flex-wrap items-baseline">
         <p className="text-white font-mono">
          <span className="text-red-500">guest</span>
          <span className="text-yellow-500">@</span>
