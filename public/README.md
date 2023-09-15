@@ -12,5 +12,5 @@ Let's connect and embark on this incredible journey together! 🌟
 
 ### My Social Media
 
-[GitHub](https://github.com/https://github.com/Intina47&layout=compact)
-[LinkedIn](https://www.linkedin.com/in/isaiah-ntina-0669a8224/)
+[💻GitHub |](https://github.com/Intina47)
+[🤝LinkedIn](https://www.linkedin.com/in/isaiah-ntina-0669a8224/)
