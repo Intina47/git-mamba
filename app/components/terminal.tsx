@@ -4,10 +4,6 @@ import { useInterval } from '../utils/blinkerIntervals';
 import BootUpSequence from './bootupSequence';
 import {helpCommands} from '../constants';
 
-interface helpmenu {
-  name: string;
-  description: string;
-}
 const TerminalLayout = () => {
  const [blink, setBlink] = useState(false);
  const [booting, setBooting] = useState(true);
