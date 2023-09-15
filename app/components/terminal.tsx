@@ -1,8 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useInterval } from '../utils/blinkerIntervals';
+import {isMobileDevice} from '../utils/responsiveness';
 import BootUpSequence from './bootupSequence';
 import { helpCommands } from '../constants';
+import './styles-for-mobile.css';
+import classNames from 'classnames';
 
 const TerminalLayout = () => {
  const [blink, setBlink] = useState(false);
@@ -13,6 +16,7 @@ const TerminalLayout = () => {
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
+ const mobile = isMobileDevice();
 
  // Scroll to the end of the terminal
  const scrollToBottom = () => {
@@ -134,7 +138,7 @@ const TerminalLayout = () => {
    break;
   case 'whoami':
    aboutmeString = (
-    <div dangerouslySetInnerHTML={{__html: readReadmeHtml}} />
+    <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} />
    );
    setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
    break;
@@ -157,7 +161,6 @@ const TerminalLayout = () => {
   const paddedCount = String(userCount).padStart(3, '0');
   return `imnss${paddedCount}`;
  };
-
  return (
   <div className='w-full md:w-1/2 bg-black text-green-500 p-6 rounded-lg shadow-lg mx-auto'>
    {booting ? (
@@ -191,7 +194,7 @@ const TerminalLayout = () => {
 
      <form onSubmit={handleInputSubmit}>
       {/* md:flex-col md:flex-wrap md:items-baseline */}
-      <div className='flex items-baseline' ref={endOfTerminalRef}>
+      <div className={classNames('flex items-baseline', { 'mobile-styles': mobile })} ref={endOfTerminalRef}>
        <p className='text-white font-mono'>
         <span className='text-red-500'>guest</span>
         <span className='text-yellow-500'>@</span>

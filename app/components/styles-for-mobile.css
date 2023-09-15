@@ -1,0 +1,11 @@
+/* styles-for-mobile.css */
+@media (max-width: 767px) {
+    .mobile-styles {
+      /* Your mobile-specific styles go here */
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: baseline;
+    }
+  }
+  
