@@ -10,7 +10,24 @@ const TerminalLayout = () => {
  const [userCount, setUserCount] = useState(0);
  const [lastLoginTime, setLastLoginTime] = useState('');
  const [inputValue, setInputValue] = useState('');
- const [outputText, setOutputText] = useState<string[]>([]);
+ const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
+ const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
+
+ // scroll to the end of the terminal
+ const scrollToBottom = () => {
+  if (endOfTerminalRef.current) {
+   endOfTerminalRef.current.scrollIntoView({ behavior: 'smooth', block: 'end'});
+  }
+ };
+ //  clear terminal
+ const clearTerminal = () => {
+  setOutputText([]);
+ };
+  // scroll to the end of the terminal when the outputText changes
+ useEffect(() => {
+  scrollToBottom();
+ }
+ ,[outputText]);
  //  simulate the boot-up process
  useEffect(() => {
   if (typeof window !== 'undefined') {
@@ -47,20 +64,44 @@ const TerminalLayout = () => {
  // handle user input submission
  const handleInputSubmit = (e: { preventDefault: () => void; }) => {
   e.preventDefault();
-  // do not process empty input
   if (inputValue.trim() === '') return;
-  // add the user input to the terminal output
-  setOutputText([...outputText, inputValue]);
-  //handle user input
-  // setOutputText([...outputText, `You entered: ${inputValue}`]);
+
+  // create a unique key for the new jsx element
+  const uniqueKey = new Date().getTime().toString();
+  // add the user input as a string
+  const inputString = (
+   <p className='text-white font-mono' key={uniqueKey + '-input'}>
+    <span className='text-red-500'>guest</span>
+    <span className='text-yellow-500'>@</span>
+    <span className='text-blue-500'>mamba.sh</span>
+    <span className='text-yellow-500'> ~ $ </span>
+    {inputValue}
+   </p>
+  );
+
+  // Combine both arrays and set the state
+  setOutputText((prevOutput) => [...prevOutput, inputString]);
+  // handle user input
   if (inputValue.trim() === 'help') {
-   const helpOutput : string[] = [];
+   const helpOutput: React.ReactNode[] = [];
+   helpOutput.push(<div key="help-heading" className="text-yellow-500 font-light text-sm mb-1">Use the commands below to get around:</div>);
    helpCommands.forEach((command) => {
-    helpOutput.push(`${command.name} - ${command.description}`);
+    helpOutput.push(
+     <div key={command.name} className="text-white font-light text-sm">
+      <span className="text-yellow-500">{command.name}</span> - {command.description}
+     </div>
+    );
    });
-   setOutputText([...outputText, ...helpOutput]);
+   setOutputText((prevOutput) => [...prevOutput, ...helpOutput]);
+  } else if (inputValue.trim() === 'clear'){
+   clearTerminal();
   } else {
-   setOutputText([...outputText, `Command not found: ${inputValue}`]);
+   const errorString = (
+    <p className='text-red-500 font-mono' key={uniqueKey + '-error'}>
+     {inputValue}: command not found
+    </p>
+   );
+   setOutputText((prevOutput) => [...prevOutput, errorString]);
   }
   // clear the input field
   setInputValue('');
@@ -87,7 +128,7 @@ const TerminalLayout = () => {
       <hr className="border-gray-600 my-4"/>
 
       {/* Display terminal output */}
-      <div className="mb-2">
+      <div className="mb-2" ref={endOfTerminalRef}>
        {outputText.map((line, index) => (
         <p key={index} className="text-white font-mono">
          {line}
@@ -97,7 +138,7 @@ const TerminalLayout = () => {
 
       <form onSubmit={handleInputSubmit}>
        {/* md:flex-col md:flex-wrap md:items-baseline */}
-       <div className="flex items-baseline">
+       <div className="flex items-baseline" ref={endOfTerminalRef}>
         <p className="text-white font-mono">
          <span className="text-red-500">guest</span>
          <span className="text-yellow-500">@</span>

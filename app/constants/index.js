@@ -5,11 +5,7 @@ export const helpCommands = [
   description: 'List all files in the current directory'
  },
  {
-  name: 'cd [DIRECTORY]',
-  description: 'Change directory'
- },
- {
-  name: 'cat [FILENAME]',
+  name: 'cat FILENAME',
   description: 'Show file content'
  },
  {
