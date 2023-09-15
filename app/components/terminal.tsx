@@ -2,7 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { useInterval } from '../utils/blinkerIntervals';
 import BootUpSequence from './bootupSequence';
+import {helpCommands} from '../constants';
 
+interface helpmenu {
+  name: string;
+  description: string;
+}
 const TerminalLayout = () => {
  const [blink, setBlink] = useState(false);
  const [booting, setBooting] = useState(true);
@@ -51,7 +56,16 @@ const TerminalLayout = () => {
   // add the user input to the terminal output
   setOutputText([...outputText, inputValue]);
   //handle user input
-  setOutputText([...outputText, `You entered: ${inputValue}`]);
+  // setOutputText([...outputText, `You entered: ${inputValue}`]);
+  if (inputValue.trim() === 'help') {
+   const helpOutput : string[][] = [];
+   helpCommands.forEach((command) => {
+    helpOutput.push([`${command.name} - ${command.description}`]);
+   });
+   setOutputText([...outputText, ...helpOutput]);
+  } else {
+   setOutputText([...outputText, `Command not found: ${inputValue}`]);
+  }
   // clear the input field
   setInputValue('');
  };
@@ -86,7 +100,8 @@ const TerminalLayout = () => {
       </div>
 
       <form onSubmit={handleInputSubmit}>
-       <div className="flex flex-col flex-wrap items-baseline">
+       {/* md:flex-col md:flex-wrap md:items-baseline */}
+       <div className="flex items-baseline">
         <p className="text-white font-mono">
          <span className="text-red-500">guest</span>
          <span className="text-yellow-500">@</span>
