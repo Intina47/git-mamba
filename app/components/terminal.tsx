@@ -58,9 +58,9 @@ const TerminalLayout = () => {
   //handle user input
   // setOutputText([...outputText, `You entered: ${inputValue}`]);
   if (inputValue.trim() === 'help') {
-   const helpOutput : string[][] = [];
+   const helpOutput : string[] = [];
    helpCommands.forEach((command) => {
-    helpOutput.push([`${command.name} - ${command.description}`]);
+    helpOutput.push(`${command.name} - ${command.description}`);
    });
    setOutputText([...outputText, ...helpOutput]);
   } else {

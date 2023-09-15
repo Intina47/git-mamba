@@ -13,10 +13,6 @@ export const helpCommands = [
   description: 'Show file content'
  },
  {
-  name: 'clear',
-  description: 'Clear the terminal screen'
- },
- {
   name: 'whoami',
   description: 'Learn more about Me'
  },
@@ -25,19 +21,7 @@ export const helpCommands = [
   description: 'Sign In'
  },
  {
-  name: 'pwd',
-  description: 'Show current directory'
- },
- {
-  name: 'echo [text]',
-  description: 'Print text'
- },
- {
-  name: 'help',
-  description: 'Show help'
- },
- {
-  name: 'help [Command]',
-  description: 'Show help for a Command'
+  name: 'clear',
+  description: 'Clear the terminal screen'
  },
 ];
