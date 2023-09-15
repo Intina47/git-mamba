@@ -94,6 +94,7 @@ const TerminalLayout = () => {
  const handleInputSubmit = (e: { preventDefault: () => void }) => {
   e.preventDefault();
   if (inputValue.trim() === '') return;
+  const sanitizedInput = inputValue.trim().toLowerCase();
 
   // Create a unique key for the new JSX element
   const uniqueKey = new Date().getTime().toString();
@@ -105,7 +106,7 @@ const TerminalLayout = () => {
     <span className='text-yellow-500'>@</span>
     <span className='text-blue-500'>mamba.sh</span>
     <span className='text-yellow-500'> ~ $ </span>
-    {inputValue}
+    {sanitizedInput}
    </p>
   );
 
@@ -116,7 +117,7 @@ const TerminalLayout = () => {
   let aboutmeString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
 
   // Handle user input using a switch
-  switch (inputValue) {
+  switch (sanitizedInput) {
   case 'help':
    helpString = (
     <div className='text-white text-sm font-light' key={uniqueKey + '-output'}>
@@ -145,7 +146,7 @@ const TerminalLayout = () => {
   default:
    errorString = (
     <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-     {inputValue}: command not found
+     {sanitizedInput}: command not found
     </p>
    );
    setOutputText((prevOutput) => [...prevOutput, errorString]);
