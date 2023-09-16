@@ -204,10 +204,12 @@ const TerminalLayout = () => {
        </p>
        <input
         type='text'
+        // text input caret the blinking curson
         className='bg-transparent text-white outline-none ml-2'
         value={inputValue}
         onChange={handleInputChange}
         autoFocus
+        placeholder='type here..'
        />
       </div>
      </form>
