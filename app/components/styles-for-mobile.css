@@ -8,3 +8,23 @@
       align-items: baseline;
     }
   }
+  h3{
+    font-size: 1rem;
+    margin: 0.5rem;
+    font-weight: bold;
+    color: aqua;
+  }
+  a {
+    color: #38a169;
+    text-decoration: none;
+    background-color: aliceblue;
+    padding: 0.5rem;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  a:hover {
+    color: #38a169;
+    text-decoration: none;
+    background-color: lightblue;
+    transform: scale(1.05);
+  }

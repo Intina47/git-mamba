@@ -25,3 +25,26 @@ export const helpCommands = [
   description: 'Clear the terminal screen'
  },
 ];
+// ls command
+export const lsfliles = [
+ {
+  name: 'about',
+  url: 'public/README.md',
+  description: 'About Me'
+ },
+ {
+  name: 'skills',
+  url: 'public/skills.md',
+  description: 'My Skills'
+ },
+ {
+  name: 'projects',
+  url: 'public/projects.md',
+  description: 'My Projects'
+ },
+ {
+  name: 'contact',
+  url: 'public/contact.md',
+  description: 'Contact Me'
+ },
+];
