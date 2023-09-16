@@ -170,9 +170,14 @@ const TerminalLayout = () => {
    break;
   default:
    errorString = (
-    <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+    <><p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
      {sanitizedInputForDisplay}: command not found
-    </p>
+    </p><ul className="list-disc list-inside text-sm font-light mt-1">
+     <h2 className='text-green-500 font-light text-sm'>Try one of the following:</h2>
+     <li><span className='text-yellow-500'>help</span> - discover list of commands to help you get around</li>
+     <li><span className='text-yellow-500'>clear</span> - clear the terminal</li>
+     <li><span className='text-yellow-500'>whoami</span> - learn more about me</li>
+    </ul></>
    );
    setOutputText((prevOutput) => [...prevOutput, errorString]);
    break;
