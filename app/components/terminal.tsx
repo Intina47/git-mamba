@@ -6,6 +6,7 @@ import BootUpSequence from './bootupSequence';
 import { helpCommands } from '../constants';
 import './styles-for-mobile.css';
 import classNames from 'classnames';
+import { escapeHtml } from 'markdown-it/lib/common/utils';
 
 const TerminalLayout = () => {
  const [blink, setBlink] = useState(false);
@@ -89,15 +90,42 @@ const TerminalLayout = () => {
  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
   setInputValue(e.target.value);
  };
-
+ //  const logFilePath = path.join(__dirname, 'user_activity.log');
  // Handle user input submission
  const handleInputSubmit = (e: { preventDefault: () => void }) => {
   e.preventDefault();
   if (inputValue.trim() === '') return;
-  const sanitizedInput = inputValue.trim().toLowerCase();
-
   // Create a unique key for the new JSX element
   const uniqueKey = new Date().getTime().toString();
+  let helpString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
+  let errorString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
+  let aboutmeString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
+  // TO_DO
+  // Send an event with the current time as a parameter so that we can track how long each command takes in our analytics dashboards
+  // sanitize to remove trailing spaces and convert into small letters
+  const sanitizedInput = inputValue.trim().toLowerCase();
+  // Sanitize the input for display (makes sure user inputs are treated as plain text)
+  const sanitizedInputForDisplay = escapeHtml(sanitizedInput);
+  // white list [a list of allowed patterns]
+  const allowedPattern = /^[a-zA-Z0-9\s\-_]+$/;
+  const blacklist = [';', '|', '&', '$', '&&', '||', '`', '>', '<', '(', ')', '{', '}'];
+  // Check if the input contains any blacklisted characters
+  const containsBlacklistedChars = blacklist.some((char) => sanitizedInput.includes(char));
+  // Check if the input contains any characters that are not whitelisted
+  const containsNonWhitelistedChars = !allowedPattern.test(sanitizedInput);
+  // If the input contains any blacklisted characters, or any characters that are not whitelisted, return early
+  if (containsBlacklistedChars || containsNonWhitelistedChars) {
+   errorString = (
+    <p className='text-red-700 font-mono' key={uniqueKey + '-output'}>
+     {sanitizedInputForDisplay}: command not Allowed
+    </p>
+   );
+   setOutputText((prevOutput) => [...prevOutput, errorString]);
+   setInputValue('');
+   return;
+  }
+  // const outputMessage = `${sanitizedInput} is ${Math.floor((Math.random()*2)+3)}`;
+  // const logEntry = `[${lastLoginTime}] User "${sanitizedInput}" says "${outputMessage}".\n`;
 
   // Add the user input as a string
   const inputString = (
@@ -112,9 +140,6 @@ const TerminalLayout = () => {
 
   // Combine both arrays and set the state
   setOutputText((prevOutput) => [...prevOutput, inputString]);
-  let helpString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
-  let errorString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
-  let aboutmeString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
 
   // Handle user input using a switch
   switch (sanitizedInput) {
@@ -146,7 +171,7 @@ const TerminalLayout = () => {
   default:
    errorString = (
     <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-     {sanitizedInput}: command not found
+     {sanitizedInputForDisplay}: command not found
     </p>
    );
    setOutputText((prevOutput) => [...prevOutput, errorString]);
