@@ -144,13 +144,20 @@ const TerminalLayout = () => {
   );
   setOutputText((prevOutput) => [...prevOutput, inputString]);
 
-  //   extract cat from the cat command only make sure sanitizedInput takes only cat to the switch
   if (sanitizedInput.startsWith('cat')) {
    filename = sanitizedInput.split(' ')[1];
+   if (!filename){
+    errorString= (
+     <p  className="text-red-600" >
+       Please enter file name to cat.
+      <p className="text-green-500 ml-1">Example: cat projects.md</p>
+     </p>);
+    setOutputText((prevOutput) => [...prevOutput, errorString]);
+    setInputValue('');
+    return;
+   }
    sanitizedInput = 'cat';
   }
-  console.log('Sanitized Input2: ', sanitizedInput);
-  console.log('file name: ', filename);
 
   // Switch statement to handle the different commands
   switch (sanitizedInput) {
@@ -210,11 +217,19 @@ const TerminalLayout = () => {
     );
     setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
    }else {
-    errorString = (
-     <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-      {filename}: does not exist
-     </p>
-    );
+    if(filename === ''){
+     errorString = (
+      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+                     Please enter a valid filename
+      </p>
+     );
+    } else {
+     errorString = (
+      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+       {filename}: Sorry! No such file exists
+      </p>
+     );
+    }
     setOutputText((prevOutput) => [...prevOutput, errorString]);
    }
    break;
@@ -236,11 +251,9 @@ const TerminalLayout = () => {
    break;
   }
 
-  // Clear the input field
   setInputValue('');
  };
 
- // Function to format the user count as "imnssxxx"
  const formatUserCount = () => {
   const paddedCount = String(userCount).padStart(3, '0');
   return `imnss${paddedCount}`;
@@ -251,7 +264,6 @@ const TerminalLayout = () => {
     <BootUpSequence />
    ) : (
     <>
-     {/* mamba.sh heading */}
      <p className='text-green-500 text-2xl font-mono'>mamba.sh</p>
 
      <hr className='border-gray-600 my-4' />
@@ -277,7 +289,6 @@ const TerminalLayout = () => {
      </div>
 
      <form onSubmit={handleInputSubmit}>
-      {/* md:flex-col md:flex-wrap md:items-baseline */}
       <div className={classNames('flex items-baseline', { 'mobile-styles': mobile })} ref={endOfTerminalRef}>
        <p className='text-white font-mono'>
         <span className='text-red-500'>guest</span>

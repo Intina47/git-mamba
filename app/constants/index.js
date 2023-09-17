@@ -12,10 +12,6 @@ export const helpCommands = [
   name: 'whoami',
   description: 'Learn more about Me'
  },
- //  {
- //   name: 'sudo [USERNAME]',
- //   description: 'Sign In'
- //  },
  {
   name: 'help',
   description: 'Show all available commands'
