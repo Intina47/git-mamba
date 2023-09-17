@@ -8,7 +8,7 @@ const BootUpSequence = () => {
   let i = 0;
   const typing = setInterval(() => {
    if (i < fullText.length) {
-    setText((prevText) => prevText + fullText.charAt(i));
+    setText(fullText.slice(0, i+1));
     i++;
    } else {
     clearInterval(typing);
@@ -20,7 +20,7 @@ const BootUpSequence = () => {
  return (
   <pre className="text-green-500 font-mono whitespace-pre-wrap">
    {text}
-   <span className="animate-pulse">...</span>
+   <span className="animate-pulse">....</span>
   </pre>
  );
 };
