@@ -150,7 +150,7 @@ const TerminalLayout = () => {
     errorString= (
      <p  className="text-red-600" >
        Please enter file name to cat.
-      <p className="text-green-500 ml-1">Example: cat projects.md</p>
+      <p className="text-green-500 ml-1">Example: cat readme.md</p>
      </p>);
     setOutputText((prevOutput) => [...prevOutput, errorString]);
     setInputValue('');
@@ -221,12 +221,14 @@ const TerminalLayout = () => {
      errorString = (
       <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
                      Please enter a valid filename
+                     <p className="text-green-500 ml-1">Usage example: cat readme.md</p>
       </p>
      );
     } else {
      errorString = (
       <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
        {filename}: Sorry! No such file exists
+       <p className="text-green-500 ml-1">Type <span className='text-yellow-500 px-1 rounded'>&lsquo;ls&lsquo;</span> to see all files available</p>
       </p>
      );
     }
@@ -245,6 +247,7 @@ const TerminalLayout = () => {
      <li><span className='text-yellow-500'>help</span> - discover list of commands to help you get around</li>
      <li><span className='text-yellow-500'>clear</span> - clear the terminal</li>
      <li><span className='text-yellow-500'>whoami</span> - learn more about me</li>
+     <li><span className='text-yellow-500'>ls</span> - list of files eg.projects, cv.pdf</li>
     </ul></>
    );
    setOutputText((prevOutput) => [...prevOutput, errorString]);
