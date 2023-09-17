@@ -13,7 +13,7 @@ const BootUpSequence = () => {
    } else {
     clearInterval(typing);
    }
-  }, 100); // Speed of typing animation
+  }, 100);
   return () => clearInterval(typing);
  }, []);
 

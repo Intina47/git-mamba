@@ -86,7 +86,7 @@ const TerminalLayout = () => {
 
    const timer = setTimeout(() => {
     setBooting(false);
-   }, 1000000);
+   }, 5000);
 
    return () => clearTimeout(timer);
   }
