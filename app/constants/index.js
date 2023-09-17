@@ -1,16 +1,12 @@
 // help
 export const helpCommands = [
-//  {
-//   name: 'ls',
-//   description: 'List all files in the current directory'
-//  },
-//  {
-//   name: 'cat FILENAME',
-//   description: 'Show file content'
-//  },
  {
-  name: 'help',
-  description: 'Show all available commands'
+  name: 'ls',
+  description: 'List all files in the current directory'
+ },
+ {
+  name: 'cat FILENAME',
+  description: 'Show file content'
  },
  {
   name: 'whoami',
@@ -21,6 +17,10 @@ export const helpCommands = [
  //   description: 'Sign In'
  //  },
  {
+  name: 'help',
+  description: 'Show all available commands'
+ },
+ {
   name: 'clear',
   description: 'Clear the terminal screen'
  },
@@ -28,23 +28,18 @@ export const helpCommands = [
 // ls command
 export const lsfliles = [
  {
-  name: 'about',
-  url: 'public/README.md',
+  name: 'README.md',
+  apiEndpoint: 'readme',
   description: 'About Me'
  },
  {
-  name: 'skills',
-  url: 'public/skills.md',
+  name: 'skills.md',
+  apiEndpoint: 'skills',
   description: 'My Skills'
  },
  {
-  name: 'projects',
-  url: 'public/projects.md',
+  name: 'projects.md',
+  apiEndpoint: 'projects',
   description: 'My Projects'
- },
- {
-  name: 'contact',
-  url: 'public/contact.md',
-  description: 'Contact Me'
  },
 ];

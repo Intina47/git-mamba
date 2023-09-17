@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useInterval } from '../utils/blinkerIntervals';
 import {isMobileDevice} from '../utils/responsiveness';
+import {fetchMdFiles} from '../utils/fetchmdfiles';
 import BootUpSequence from './bootupSequence';
-import { helpCommands } from '../constants';
+import { helpCommands, lsfliles } from '../constants';
 import './styles-for-mobile.css';
 import classNames from 'classnames';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
@@ -17,7 +18,12 @@ const TerminalLayout = () => {
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
+ const [readProjectsFile, setReadProjectsfile] = useState('');
+ const [readSkillsFile, setReadSkillsfile] = useState('');
  const mobile = isMobileDevice();
+ // sanitize to remove trailing spaces and convert into small letters
+ let sanitizedInput = inputValue.trim().toLowerCase();
+ let filename = '';
 
  // Scroll to the end of the terminal
  const scrollToBottom = () => {
@@ -32,23 +38,27 @@ const TerminalLayout = () => {
  };
 
  useEffect(() => {
-  async function fetchReadme() {
-   try {
-    const response = await fetch('/api/readme');
-    console.log('Fetching from read me');
-    if (response.ok) {
-     console.log('fetch was succefull');
-     const data = await response.json();
-     setReadmeHtml(data.htmlContent);
-    } else {
-     console.error('[loop] Error fetching README: ', response.statusText);
-    }
-   } catch (error) {
-    console.error('[catch] Error fetching README: ', error);
+  fetchMdFiles('/api/readme').then((data) => {
+   if (data) {
+    setReadmeHtml(data.htmlContent);
    }
-  }
-  fetchReadme();
+  });
  }, []);
+ useEffect(() => {
+  fetchMdFiles('/api/projects').then((data) => {
+   if (data) {
+    setReadProjectsfile(data.htmlContent);
+   }
+  });
+ }, []);
+ useEffect(() => {
+  fetchMdFiles('api/skills').then((data) => {
+   if (data) {
+    setReadSkillsfile(data.htmlContent);
+   }
+  });
+ },[]);
+
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
@@ -90,7 +100,7 @@ const TerminalLayout = () => {
  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
   setInputValue(e.target.value);
  };
- //  const logFilePath = path.join(__dirname, 'user_activity.log');
+
  // Handle user input submission
  const handleInputSubmit = (e: { preventDefault: () => void }) => {
   e.preventDefault();
@@ -100,14 +110,12 @@ const TerminalLayout = () => {
   let helpString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
   let errorString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
   let aboutmeString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
-  // TO_DO
-  // Send an event with the current time as a parameter so that we can track how long each command takes in our analytics dashboards
-  // sanitize to remove trailing spaces and convert into small letters
-  const sanitizedInput = inputValue.trim().toLowerCase();
+  let listOfFiles: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
+
   // Sanitize the input for display (makes sure user inputs are treated as plain text)
   const sanitizedInputForDisplay = escapeHtml(sanitizedInput);
   // white list [a list of allowed patterns]
-  const allowedPattern = /^[a-zA-Z0-9\s\-_]+$/;
+  const allowedPattern = /^[a-zA-Z0-9\s\-._]+$/;
   const blacklist = [';', '|', '&', '$', '&&', '||', '`', '>', '<', '(', ')', '{', '}'];
   // Check if the input contains any blacklisted characters
   const containsBlacklistedChars = blacklist.some((char) => sanitizedInput.includes(char));
@@ -124,10 +132,7 @@ const TerminalLayout = () => {
    setInputValue('');
    return;
   }
-  // const outputMessage = `${sanitizedInput} is ${Math.floor((Math.random()*2)+3)}`;
-  // const logEntry = `[${lastLoginTime}] User "${sanitizedInput}" says "${outputMessage}".\n`;
 
-  // Add the user input as a string
   const inputString = (
    <p className='text-white font-mono' key={uniqueKey + '-input'}>
     <span className='text-red-500'>guest</span>
@@ -137,11 +142,17 @@ const TerminalLayout = () => {
     {sanitizedInput}
    </p>
   );
-
-  // Combine both arrays and set the state
   setOutputText((prevOutput) => [...prevOutput, inputString]);
 
-  // Handle user input using a switch
+  //   extract cat from the cat command only make sure sanitizedInput takes only cat to the switch
+  if (sanitizedInput.startsWith('cat')) {
+   filename = sanitizedInput.split(' ')[1];
+   sanitizedInput = 'cat';
+  }
+  console.log('Sanitized Input2: ', sanitizedInput);
+  console.log('file name: ', filename);
+
+  // Switch statement to handle the different commands
   switch (sanitizedInput) {
   case 'help':
    helpString = (
@@ -159,14 +170,56 @@ const TerminalLayout = () => {
    );
    setOutputText((prevOutput) => [...prevOutput, helpString]);
    break;
-  case 'clear':
-   clearTerminal();
-   break;
   case 'whoami':
    aboutmeString = (
     <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} />
    );
    setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
+   break;
+  case 'ls':
+   listOfFiles = (
+    <div className='text-white text-sm font-light' key={uniqueKey + '-output'}>
+     <p className='text-sm text-green-500 font-light mb-1'>use cat FILENAME to explore each file below</p>
+     <ul className='list-disc list-inside'>
+      {lsfliles.map((command, index) => (
+       <li key={index}>
+        <span className='text-yellow-500'>{command.name}</span>
+        <span className='text-white'> - {command.description}</span>
+       </li>
+      ))}
+     </ul>
+    </div>
+   );
+   setOutputText((prevOutput) => [...prevOutput, listOfFiles]);
+   break;
+  case 'cat':
+   if (filename === 'projects.md') {
+    // aboutmeString = (<AboutMe />);
+    aboutmeString = (
+     <div className='mt-2' dangerouslySetInnerHTML={{__html: readProjectsFile}} />
+    );
+    setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
+   } else if (filename === 'readme.md') {
+    aboutmeString = (
+     <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} />
+    );
+    setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
+   } else if (filename == 'skills.md') {
+    aboutmeString = (
+     <div className='mt-2' dangerouslySetInnerHTML={{__html: readSkillsFile}} />
+    );
+    setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
+   }else {
+    errorString = (
+     <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+      {filename}: does not exist
+     </p>
+    );
+    setOutputText((prevOutput) => [...prevOutput, errorString]);
+   }
+   break;
+  case 'clear':
+   clearTerminal();
    break;
   default:
    errorString = (
