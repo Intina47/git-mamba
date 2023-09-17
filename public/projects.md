@@ -37,7 +37,7 @@ In addition to my academic pursuits in computer science, I actively engage in pe
 
 #### 4. The Little Green Larder
 
-- *Link:* [The Little Green Larder](https://the-little-green-larder.onrender.com)
+- *Link:* [Little Green](https://the-little-green-larder.onrender.com)
 - *Description:* A class project focused on implementing agile methodologies.
 - *Tech Stack:* Node.js, Daisy UI, CSS, UIKIT, JavaScript
 - *Highlights:*
