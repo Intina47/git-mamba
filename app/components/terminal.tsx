@@ -72,7 +72,7 @@ const TerminalLayout = () => {
 
    fetch('/api/fun')
     .then((response) => {
-     if (!response.ok) {
+     if (response.status != 200) {
       throw new Error('Network response was not ok');
      }
      return response.json();
@@ -83,7 +83,7 @@ const TerminalLayout = () => {
       console.error('API error:', data.error);
       setLoading(false); // Set loading state to false on error
      } else {
-      setImages(data.images);
+      setImages(data.result);
       setLoading(false); // Set loading state to false on success
      }
     })
@@ -279,7 +279,7 @@ const TerminalLayout = () => {
      setTimeout(() => {
       // Remove the error message from outputText
       setOutputText((prevOutput) => prevOutput.filter(item => item !== errorMessage));
-     }, 5000); // 5000 milliseconds (5 seconds) for the error message
+     }, 10000); // 5000 milliseconds (5 seconds) for the error message
     }, 5000); // 5000 milliseconds (5 seconds) for the loading message
    }  else {
     guesswhat = (
