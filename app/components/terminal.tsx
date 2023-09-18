@@ -23,6 +23,9 @@ const TerminalLayout = () => {
  const [readReadmeHtml, setReadmeHtml] = useState('');
  const [readProjectsFile, setReadProjectsfile] = useState('');
  const [readSkillsFile, setReadSkillsfile] = useState('');
+ const [images, setImages] = useState([]);
+ const [loading, setLoading] = useState(true);
+ const [triggerApiCall, setTriggerApiCall] = useState(false);
  const mobile = isMobileDevice();
 
  // sanitize to remove trailing spaces and convert into small letters
@@ -62,6 +65,36 @@ const TerminalLayout = () => {
    }
   });
  },[]);
+ //  fun.js endpoint
+ useEffect(() => {
+  if (triggerApiCall) {
+   setLoading(true); // Set loading state to true initially
+
+   fetch('/api/fun')
+    .then((response) => {
+     if (!response.ok) {
+      throw new Error('Network response was not ok');
+     }
+     return response.json();
+    })
+    .then((data) => {
+     // Check for error in data
+     if (data.error) {
+      console.error('API error:', data.error);
+      setLoading(false); // Set loading state to false on error
+     } else {
+      setImages(data.images);
+      setLoading(false); // Set loading state to false on success
+     }
+    })
+    .catch((error) => {
+     console.error('An Error Occurred:', error);
+     setLoading(false); // Set loading state to false on error
+    });
+
+   setTriggerApiCall(false);
+  }
+ }, [triggerApiCall]);
 
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
@@ -99,7 +132,6 @@ const TerminalLayout = () => {
  useInterval(() => {
   setBlink(!blink);
  }, 500);
-
  // Handle user input
  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
   setInputValue(e.target.value);
@@ -109,12 +141,16 @@ const TerminalLayout = () => {
  const handleInputSubmit = (e: { preventDefault: () => void }) => {
   e.preventDefault();
   if (inputValue.trim() === '') return;
+  if (inputValue.trim() === 'guesswhat'){
+   setTriggerApiCall(true);
+  }
   // Create a unique key for the new JSX element
   const uniqueKey = new Date().getTime().toString();
   let helpString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
   let errorString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
   let aboutmeString: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
   let listOfFiles: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
+  let guesswhat: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined;
 
   // Sanitize the input for display (makes sure user inputs are treated as plain text)
   const sanitizedInputForDisplay = escapeHtml(sanitizedInput);
@@ -211,6 +247,57 @@ const TerminalLayout = () => {
    );
    setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
    break;
+   //    guesswhat, create a list of animals pick one animal in random from the list and send it to the scrapper for it to get the images
+  case 'guesswhat':
+
+   if (loading) {
+    guesswhat = (
+     <div>
+      <p className='text-white font-mono' key={uniqueKey + '-output'}>
+       <span className='text-yellow-500'>🤔 Thinking:</span> Please wait{' '}
+       <span className="animate-pulse"> .... </span>
+      </p>
+     </div>
+    );
+
+    // Set a timer to remove the loading message after a certain time (e.g., 5 seconds)
+    setTimeout(() => {
+     // Remove the loading message from outputText
+     setOutputText((prevOutput) => prevOutput.filter(item => item !== guesswhat));
+
+     // Show the "Taking longer than expected" message
+     const errorMessage = (
+      <p className='text-white font-mono'>
+       <span className='text-red-500'>😞 This is taking longer than expected, can you enter the command again 😞 </span> {' '}
+       <span className="animate-pulse"> .... </span>
+      </p>
+     );
+
+     setOutputText((prevOutput) => [...prevOutput, errorMessage]);
+
+     // Set a timer to remove the error message after a certain time (e.g., 5 seconds)
+     setTimeout(() => {
+      // Remove the error message from outputText
+      setOutputText((prevOutput) => prevOutput.filter(item => item !== errorMessage));
+     }, 5000); // 5000 milliseconds (5 seconds) for the error message
+    }, 5000); // 5000 milliseconds (5 seconds) for the loading message
+   }  else {
+    guesswhat = (
+     <div className='mt-2'>
+      <div className='flex flex-wrap justify-center'>
+       {images.map((image, index) => (
+        <div key={index} className='w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2'>
+         <img src={image} alt='animal' className='rounded-lg' />
+        </div>
+       ))}
+      </div>
+     </div>
+    );
+   }
+
+   setOutputText((prevOutput) => [...prevOutput, guesswhat]);
+   break;
+
   case 'cat':
    if (filename === 'projects.md') {
     // aboutmeString = (<AboutMe />);
