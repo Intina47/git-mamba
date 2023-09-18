@@ -8,6 +8,9 @@ import { helpCommands, lsfliles } from '../constants';
 import './styles-for-mobile.css';
 import classNames from 'classnames';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+// env
+import dotenv from 'dotenv';
+dotenv.config();
 
 const TerminalLayout = () => {
  const [blink, setBlink] = useState(false);
@@ -21,6 +24,7 @@ const TerminalLayout = () => {
  const [readProjectsFile, setReadProjectsfile] = useState('');
  const [readSkillsFile, setReadSkillsfile] = useState('');
  const mobile = isMobileDevice();
+
  // sanitize to remove trailing spaces and convert into small letters
  let sanitizedInput = inputValue.trim().toLowerCase();
  let filename = '';
@@ -199,6 +203,14 @@ const TerminalLayout = () => {
    );
    setOutputText((prevOutput) => [...prevOutput, listOfFiles]);
    break;
+  case 'email':
+   aboutmeString = (
+    <p className='text-white font-mono' key={uniqueKey + '-output'}>
+     <span className='text-yellow-500'>Email:</span> {process.env.NEXT_PUBLIC_EMAIL}
+    </p>
+   );
+   setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
+   break;
   case 'cat':
    if (filename === 'projects.md') {
     // aboutmeString = (<AboutMe />);
@@ -221,7 +233,7 @@ const TerminalLayout = () => {
      errorString = (
       <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
                      Please enter a valid filename
-                     <p className="text-green-500 ml-1">Usage example: cat readme.md</p>
+       <p className="text-green-500 ml-1">Usage example: cat readme.md</p>
       </p>
      );
     } else {
@@ -248,6 +260,7 @@ const TerminalLayout = () => {
      <li><span className='text-yellow-500'>clear</span> - clear the terminal</li>
      <li><span className='text-yellow-500'>whoami</span> - learn more about me</li>
      <li><span className='text-yellow-500'>ls</span> - list of files eg.projects, cv.pdf</li>
+     <li><span className='text-yellow-500'>email</span> - get my email</li>
     </ul></>
    );
    setOutputText((prevOutput) => [...prevOutput, errorString]);
@@ -267,7 +280,10 @@ const TerminalLayout = () => {
     <BootUpSequence />
    ) : (
     <>
-     <p className='text-green-500 text-2xl font-mono'>mamba.sh</p>
+     {/* mamba.sh and say hi badge at the far right */}
+     <div className='flex justify-between items-center mb-4'>
+      <p className='text-green-500 text-2xl font-mono'>mamba.sh</p>
+     </div>
 
      <hr className='border-gray-600 my-4' />
      <p className='text-gray-600 text-xs font-mono mb-1'>
@@ -277,6 +293,7 @@ const TerminalLayout = () => {
      <p className='text-white font-mono mb-4'>
             I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
      </p>
+
      <p className='text-white font-mono'>
             Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
      </p>

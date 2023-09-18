@@ -20,6 +20,10 @@ export const helpCommands = [
   name: 'clear',
   description: 'Clear the terminal screen'
  },
+ {
+  name: 'email',
+  description: 'get my email'
+ }
 ];
 // ls command
 export const lsfliles = [
