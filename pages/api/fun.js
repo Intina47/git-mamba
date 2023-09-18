@@ -23,7 +23,12 @@ export default async function handler(req, res) {
  const randomAnimal = Animals[randomIndex];
  try {
   const result = await queue.add(async () => {
-   const browser = await puppeteer.launch({ headless: 'new' });
+   const browser = await puppeteer.launch({
+    userDataDir: '/home/sbx_user1051/.cache/puppeteer',
+    headless: 'new'
+   });
+   const executablePath = puppeteer.executablePath();
+   console.log('Chromium executable path:', executablePath);
    const page = await browser.newPage();
    const url = `https://www.pinterest.co.uk/search/pins/?q=${randomAnimal}`;
    await page.goto(url);
