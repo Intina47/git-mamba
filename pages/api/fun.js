@@ -23,7 +23,7 @@ export default async function handler(req, res) {
  const randomAnimal = Animals[randomIndex];
  try {
   const result = await queue.add(async () => {
-   const browser = await puppeteer.launch();
+   const browser = await puppeteer.launch({ headless: 'new' });
    const page = await browser.newPage();
    const url = `https://www.pinterest.co.uk/search/pins/?q=${randomAnimal}`;
    await page.goto(url);
