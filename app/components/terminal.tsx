@@ -97,7 +97,7 @@ const TerminalLayout = () => {
  //  }, [triggerApiCall]);
  // trigger
  async function triggerApiCallToUpdateDataJson() {
-       console.log('DOING SOMETHING---------------------\n');
+  console.log('DOING SOMETHING---------------------\n');
   try {
    const response = await fetch('/api/fun', {
     method: 'POST',
@@ -111,18 +111,18 @@ const TerminalLayout = () => {
  }
  // guesswhat endpoint
  async function fetchGuessedData(){
-       console.log('DO SOMETHING---------------------\n');
+  console.log('DO SOMETHING---------------------\n');
   setLoading(true);
   console.log('DO SOMETHING---------------------\n');
   await triggerApiCallToUpdateDataJson();
   try{
-       const response = await fetch('/api/guessdata');
+   const response = await fetch('/api/guessdata');
 
    if (!response.ok) {
     throw new Error('path:/guessdatajson, Network response was not ok');
    }
    const data = await response.json();
-//    log data
+   //    log data
    console.log('--------------DATA----------------\n', data);
    setImages(data);
    setLoading(false);
@@ -133,7 +133,7 @@ const TerminalLayout = () => {
  }
  useEffect(() => {
   if (triggerApiCall) {
-//    fetchGuessedData();
+   //    fetchGuessedData();
    setTriggerApiCall(false);
   }
  }, []);
@@ -185,7 +185,7 @@ const TerminalLayout = () => {
   if (inputValue.trim() === 'guesswhat'){
    setTriggerApiCall(true);
    fetchGuessedData();
-//    triggerApiCallToUpdateDataJson();
+   //    triggerApiCallToUpdateDataJson();
   }
   // Create a unique key for the new JSX element
   const uniqueKey = new Date().getTime().toString();
