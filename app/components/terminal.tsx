@@ -66,36 +66,77 @@ const TerminalLayout = () => {
   });
  },[]);
  //  fun.js endpoint
+ //  useEffect(() => {
+ //   if (triggerApiCall) {
+ //    setLoading(true); // Set loading state to true initially
+
+ //    fetch('/api/fun')
+ //     .then((response) => {
+ //      if (response.status != 200) {
+ //       throw new Error('Network response was not ok');
+ //      }
+ //      return response.json();
+ //     })
+ //     .then((data) => {
+ //      // Check for error in data
+ //      if (data.error) {
+ //       console.error('API error:', data.error);
+ //       setLoading(false); // Set loading state to false on error
+ //      } else {
+ //       setImages(data.result);
+ //       setLoading(false); // Set loading state to false on success
+ //      }
+ //     })
+ //     .catch((error) => {
+ //      console.error('An Error Occurred:', error);
+ //      setLoading(false); // Set loading state to false on error
+ //     });
+
+ //    setTriggerApiCall(false);
+ //   }
+ //  }, [triggerApiCall]);
+ // trigger
+ async function triggerApiCallToUpdateDataJson() {
+       console.log('DOING SOMETHING---------------------\n');
+  try {
+   const response = await fetch('/api/fun', {
+    method: 'POST',
+   });
+   if (!response.ok) {
+    throw new Error('path:guessfun. Network response was not ok');
+   }
+  } catch(error) {
+   console.error('A Guess Trigger Error Occurred:', error);
+  }
+ }
+ // guesswhat endpoint
+ async function fetchGuessedData(){
+       console.log('DO SOMETHING---------------------\n');
+  setLoading(true);
+  console.log('DO SOMETHING---------------------\n');
+  await triggerApiCallToUpdateDataJson();
+  try{
+       const response = await fetch('/api/guessdata');
+
+   if (!response.ok) {
+    throw new Error('path:/guessdatajson, Network response was not ok');
+   }
+   const data = await response.json();
+//    log data
+   console.log('--------------DATA----------------\n', data);
+   setImages(data);
+   setLoading(false);
+  } catch(error) {
+   console.error('------------A Guess Error Occurred:--------------\n', error);
+   setLoading(false);
+  }
+ }
  useEffect(() => {
   if (triggerApiCall) {
-   setLoading(true); // Set loading state to true initially
-
-   fetch('/api/fun')
-    .then((response) => {
-     if (response.status != 200) {
-      throw new Error('Network response was not ok');
-     }
-     return response.json();
-    })
-    .then((data) => {
-     // Check for error in data
-     if (data.error) {
-      console.error('API error:', data.error);
-      setLoading(false); // Set loading state to false on error
-     } else {
-      setImages(data.result);
-      setLoading(false); // Set loading state to false on success
-     }
-    })
-    .catch((error) => {
-     console.error('An Error Occurred:', error);
-     setLoading(false); // Set loading state to false on error
-    });
-
+//    fetchGuessedData();
    setTriggerApiCall(false);
   }
- }, [triggerApiCall]);
-
+ }, []);
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
@@ -143,6 +184,8 @@ const TerminalLayout = () => {
   if (inputValue.trim() === '') return;
   if (inputValue.trim() === 'guesswhat'){
    setTriggerApiCall(true);
+   fetchGuessedData();
+//    triggerApiCallToUpdateDataJson();
   }
   // Create a unique key for the new JSX element
   const uniqueKey = new Date().getTime().toString();
