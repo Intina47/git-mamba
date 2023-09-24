@@ -122,8 +122,6 @@ const TerminalLayout = () => {
     throw new Error('path:/guessdatajson, Network response was not ok');
    }
    const data = await response.json();
-   //    log data
-   console.log('--------------DATA----------------\n', data);
    setImages(data);
    setLoading(false);
   } catch(error) {
@@ -133,7 +131,7 @@ const TerminalLayout = () => {
  }
  useEffect(() => {
   if (triggerApiCall) {
-   //    fetchGuessedData();
+   fetchGuessedData();
    setTriggerApiCall(false);
   }
  }, []);
