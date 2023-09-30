@@ -18,6 +18,7 @@ const TerminalLayout = () => {
  const [userCount, setUserCount] = useState(0);
  const [lastLoginTime, setLastLoginTime] = useState('');
  const [inputValue, setInputValue] = useState('');
+ //  const [suggestions, seSuggestions] = useState(['guesswhat', 'ls', 'help', 'whoami', 'email', 'cat']);
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
@@ -173,7 +174,8 @@ const TerminalLayout = () => {
  }, 500);
  // Handle user input
  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
-  setInputValue(e.target.value);
+  const value = e.target.value;
+  setInputValue(value);
  };
 
  // Handle user input submission
@@ -452,6 +454,7 @@ const TerminalLayout = () => {
         onChange={handleInputChange}
         autoFocus
         placeholder='type here..'
+        autoComplete='off'
        />
       </div>
      </form>
