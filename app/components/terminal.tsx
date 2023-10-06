@@ -18,7 +18,6 @@ const TerminalLayout = () => {
  const [userCount, setUserCount] = useState(0);
  const [lastLoginTime, setLastLoginTime] = useState('');
  const [inputValue, setInputValue] = useState('');
- //  const [suggestions, seSuggestions] = useState(['guesswhat', 'ls', 'help', 'whoami', 'email', 'cat']);
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
@@ -46,6 +45,31 @@ const TerminalLayout = () => {
  };
 
  useEffect(() => {
+  if (triggerApiCall) {
+   setLoading(true); // Set loading state to true initially
+
+   fetch('/api/fun')
+    .then((response) => {
+     if (!response.ok) {
+      throw new Error('Network response was not ok');
+     }
+     return response.json();
+    })
+    .then((data) => {
+     setImages(data.images);
+     setLoading(false); // Set loading state to false on success
+    })
+    .catch((error) => {
+     console.error('An Error Occurred:', error);
+     setLoading(false); // Set loading state to false on error
+    });
+
+   setTriggerApiCall(false);
+  }
+ }, [triggerApiCall]);
+
+ // Function that handles file uploads
+ useEffect(() => {
   fetchMdFiles('/api/readme').then((data) => {
    if (data) {
     setReadmeHtml(data.htmlContent);
@@ -66,76 +90,9 @@ const TerminalLayout = () => {
    }
   });
  },[]);
- //  fun.js endpoint
- //  useEffect(() => {
- //   if (triggerApiCall) {
- //    setLoading(true); // Set loading state to true initially
 
- //    fetch('/api/fun')
- //     .then((response) => {
- //      if (response.status != 200) {
- //       throw new Error('Network response was not ok');
- //      }
- //      return response.json();
- //     })
- //     .then((data) => {
- //      // Check for error in data
- //      if (data.error) {
- //       console.error('API error:', data.error);
- //       setLoading(false); // Set loading state to false on error
- //      } else {
- //       setImages(data.result);
- //       setLoading(false); // Set loading state to false on success
- //      }
- //     })
- //     .catch((error) => {
- //      console.error('An Error Occurred:', error);
- //      setLoading(false); // Set loading state to false on error
- //     });
+ //   fun.js endpoint
 
- //    setTriggerApiCall(false);
- //   }
- //  }, [triggerApiCall]);
- // trigger
- async function triggerApiCallToUpdateDataJson() {
-  console.log('DOING SOMETHING---------------------\n');
-  try {
-   const response = await fetch('/api/fun', {
-    method: 'POST',
-   });
-   if (!response.ok) {
-    throw new Error('path:guessfun. Network response was not ok');
-   }
-  } catch(error) {
-   console.error('A Guess Trigger Error Occurred:', error);
-  }
- }
- // guesswhat endpoint
- async function fetchGuessedData(){
-  console.log('DO SOMETHING---------------------\n');
-  setLoading(true);
-  console.log('DO SOMETHING---------------------\n');
-  await triggerApiCallToUpdateDataJson();
-  try{
-   const response = await fetch('/api/guessdata');
-
-   if (!response.ok) {
-    throw new Error('path:/guessdatajson, Network response was not ok');
-   }
-   const data = await response.json();
-   setImages(data);
-   setLoading(false);
-  } catch(error) {
-   console.error('------------A Guess Error Occurred:--------------\n', error);
-   setLoading(false);
-  }
- }
- useEffect(() => {
-  if (triggerApiCall) {
-   fetchGuessedData();
-   setTriggerApiCall(false);
-  }
- }, []);
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
@@ -184,7 +141,6 @@ const TerminalLayout = () => {
   if (inputValue.trim() === '') return;
   if (inputValue.trim() === 'guesswhat'){
    setTriggerApiCall(true);
-   fetchGuessedData();
    //    triggerApiCallToUpdateDataJson();
   }
   // Create a unique key for the new JSX element
@@ -343,7 +299,6 @@ const TerminalLayout = () => {
 
   case 'cat':
    if (filename === 'projects.md') {
-    // aboutmeString = (<AboutMe />);
     aboutmeString = (
      <div className='mt-2' dangerouslySetInnerHTML={{__html: readProjectsFile}} />
     );

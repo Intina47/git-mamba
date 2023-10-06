@@ -24,10 +24,10 @@ export const helpCommands = [
   name: 'email',
   description: 'get my email'
  },
- // {
- //  name: 'guesswhat',
- //  description: 'I\'ll use my animal intuition to guess an animal currently on your mind. Let\'s see if I can read your thoughts!'
- // },
+ {
+  name: 'guesswhat',
+  description: 'I\'ll use my animal intuition to guess an animal currently on your mind. Let\'s see if I can read your thoughts!'
+ },
 ];
 // ls command
 export const lsfliles = [
