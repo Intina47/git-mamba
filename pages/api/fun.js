@@ -2,9 +2,10 @@ import puppeteer from 'puppeteer';
 import puppeteerCore from 'puppeteer-core';
 import pQueue from 'p-queue';
 import path from 'path';
+import chromium from '@sparticuz/chromium';
 
 // Path to the Chrome executable
-const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+// const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
 // Create a queue with a concurrency limit of 1
 const queue = new pQueue({ concurrency: 1 });
@@ -32,10 +33,21 @@ export default async function handler(req, res) {
   const imageSrcs = await queue.add(async () => {
    const browser = process.env.NODE_ENV === 'production'
     ? await puppeteerCore.launch({
-     userDataDir: customUserDataDir,
+     args: [
+      ...chromium.args,
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--single-process',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+     ],
+     executablePath:
+          process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
      headless: true,
-     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-     executablePath: chromePath,
+     ignoreHTTPSErrors: true,
+     ignoreDefaultArgs: ['--disable-extensions'],
     })
     : await puppeteer.launch({
      userDataDir: customUserDataDir,
