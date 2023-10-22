@@ -1,8 +1,7 @@
-import puppeteer from 'puppeteer';
-// import puppeteerCore from 'puppeteer-core';
+import puppeteer from 'puppeteer-core';
 import pQueue from 'p-queue';
-import path from 'path';
 import chromium from 'chrome-aws-lambda';
+import puppeteerDev from 'puppeteer';
 
 // Path to the Chrome executable
 // const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -27,21 +26,19 @@ export default async function handler(req, res) {
  ];
  const randomIndex = Math.floor(Math.random() * Animals.length);
  const randomAnimal = Animals[randomIndex];
- const customUserDataDir = path.join(__dirname, '../userDataDir');
 
  try {
   const imageSrcs = await queue.add(async () => {
    const browser = process.env.NODE_ENV === 'production'
     // ? await puppeteerCore.launch({
-    ? await chromium.puppeteer.launch({
-     args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+    ? await puppeteer.launch({
+     args: chromium.args,
      executablePath: await chromium.executablePath,
-     headless: true,
+     headless: chromium.headless,
      ignoreHTTPSErrors: true,
      ignoreDefaultArgs: ['--disable-extensions'],
     })
-    : await puppeteer.launch({
-     userDataDir: customUserDataDir,
+    : await puppeteerDev.launch({
      headless: true,
      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
