@@ -43,6 +43,11 @@ const TerminalLayout = () => {
   }
  };
 
+ const openCV = () => {
+  // Open the CV in a new tab
+  window.open('/isaiahNtina.pdf', '_blank');
+ };
+
  // Clear terminal
  const clearTerminal = () => {
   setOutputText([]);
@@ -392,6 +397,7 @@ const TerminalLayout = () => {
      {/* mamba.sh and say hi badge at the far right */}
      <div className='flex justify-between items-center mb-4'>
       <p className='text-green-500 text-2xl font-mono'>mamba.sh</p>
+      <button className='bg-green-500 text-white px-4 py-2 rounded' onClick={openCV}>View CV</button>
      </div>
 
      <hr className='border-gray-600 my-4' />
