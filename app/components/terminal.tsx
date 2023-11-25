@@ -17,7 +17,7 @@ const TerminalLayout = () => {
  const [booting, setBooting] = useState(true);
  const [userCount, setUserCount] = useState(0);
  const [lastLoginTime, setLastLoginTime] = useState('');
- const [inputValue, setInputValue] = useState('');
+ //  const [inputValue, setInputValue] = useState('');
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
@@ -27,6 +27,10 @@ const TerminalLayout = () => {
  const [loading, setLoading] = useState(true);
  const [triggerApiCall, setTriggerApiCall] = useState(false);
  const mobile = isMobileDevice();
+ // Create a state variable to store the history of commands
+ const [commandHistory, setCommandHistory] = useState<string[]>([]);
+ // Create a state variable to store the current input value
+ const [inputValue, setInputValue] = useState<string>('');
 
  // sanitize to remove trailing spaces and convert into small letters
  let sanitizedInput = inputValue.trim().toLowerCase();
@@ -134,6 +138,25 @@ const TerminalLayout = () => {
   const value = e.target.value;
   setInputValue(value);
  };
+
+ // Add an event listener to listen for the keydown event
+ useEffect(() => {
+  const handleKeyDown = (event: KeyboardEvent) => {
+   if (event.keyCode === 38) { // Check if the pressed key is the arrow up key
+    event.preventDefault();
+    if (commandHistory.length > 0) { // Check if the history of commands is not empty
+     const lastCommand = commandHistory[commandHistory.length - 1]; // Get the last command from the history array
+     setInputValue(lastCommand); // Set the last command as the current input value
+    }
+   }
+  };
+
+  window.addEventListener('keydown', handleKeyDown);
+
+  return () => {
+   window.removeEventListener('keydown', handleKeyDown);
+  };
+ }, [commandHistory]);
 
  // Handle user input submission
  const handleInputSubmit = (e: { preventDefault: () => void }) => {
@@ -351,7 +374,8 @@ const TerminalLayout = () => {
    setOutputText((prevOutput) => [...prevOutput, errorString]);
    break;
   }
-
+  // Add the entered command to the history
+  setCommandHistory((prevHistory) => [...prevHistory, inputValue]);
   setInputValue('');
  };
 
