@@ -1,9 +1,9 @@
 // pages/api/latest-commit.js
 import axios from 'axios';
 
-const YOUR_PAT = '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';
-const OWNER = 'INtina47';
-const REPO = 'git-mamba';
+const YOUR_PAT = process.env.GITHUB_PAT;
+const OWNER = process.env.OWNER;
+const REPO = process.env.REPO;
 
 export default async function handler(req, res) {
  try {

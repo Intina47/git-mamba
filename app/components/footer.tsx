@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const YOUR_PAT = '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';
+const YOUR_PAT = process.env.GITHUB_PAT;
 
 type CommitData = {
     latestCommit: string;
