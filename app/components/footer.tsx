@@ -33,12 +33,12 @@ const Footer = () => {
   <div className="footerm">
    <div className="footer-left">
     <p className="text-white">Current Project, Github Latest Commit</p>
-    <p className="text-yellow-500">
+    <p className="text-yellow-500 text-sm">
      <a id='latestrepo' href="https://github.com/Intina47/git-mamba" className="no-underline text-current">
       {Commit.latestCommit.slice(0, 12)}
      </a>
       :{' '}
-     <span className="text-white">{Commit.commitmessage.length > 10 ? `${Commit.commitmessage.slice(0, 10)}...` : Commit.commitmessage}</span>
+     <span className="text-white font-light text-sm">{Commit.commitmessage.length > 10 ? `${Commit.commitmessage.slice(0, 70)}...` : Commit.commitmessage}</span>
     </p>
    </div>
   </div>
