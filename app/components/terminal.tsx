@@ -8,6 +8,7 @@ import { helpCommands, lsfliles } from '../constants';
 import './styles-for-mobile.css';
 import classNames from 'classnames';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import Footer from './footer';
 // env
 import dotenv from 'dotenv';
 dotenv.config();
@@ -443,6 +444,8 @@ const TerminalLayout = () => {
        />
       </div>
      </form>
+     <hr className='border-gray-600 my-0 mt-10' />
+     <Footer />
     </>
    )}
   </div>
