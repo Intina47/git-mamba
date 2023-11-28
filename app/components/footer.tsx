@@ -34,7 +34,7 @@ const Footer = () => {
    <div className="footer-left">
     <p className="text-white mb-1">Current Project, Github Latest Commit</p>
     <p className="text-yellow-500 text-sm">
-     <a id='latestrepo' href="https://github.com/Intina47/git-mamba" className="no-underline text-current">
+     <a id='latestrepo' href="https://github.com/Intina47/EE_error" className="no-underline text-current">
       {Commit.latestCommit.slice(0, 12)}
      </a>
       :{' '}
