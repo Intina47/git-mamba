@@ -1,6 +1,6 @@
 // import puppeteer from 'puppeteer-core';
 import pQueue from 'p-queue';
-import chromium from 'chrome-aws-lambda';
+// import chromium from 'chrome-aws-lambda';
 import puppeteer from 'chrome-aws-lambda';
 import puppeteerDev from 'puppeteer';
 
@@ -32,9 +32,9 @@ export default async function handler(req, res) {
   const imageSrcs = await queue.add(async () => {
    const browser = process.env.NODE_ENV === 'production'
     ? await puppeteer.launch({
-     args: [...chromium.args, '--no-sandbox'],
-     executablePath: await chromium.executablePath,
-     headless: chromium.headless,
+     args: [...puppeteer.args, '--no-sandbox'],
+     executablePath: await puppeteer.executablePath,
+     headless: puppeteer.headless,
      ignoreHTTPSErrors: true,
      ignoreDefaultArgs: ['--disable-extensions'],
     })
