@@ -1,6 +1,7 @@
-import puppeteer from 'puppeteer-core';
+// import puppeteer from 'puppeteer-core';
 import pQueue from 'p-queue';
 import chromium from 'chrome-aws-lambda';
+import puppeteer from 'chrome-aws-lambda';
 import puppeteerDev from 'puppeteer';
 
 // Path to the Chrome executable
@@ -30,9 +31,8 @@ export default async function handler(req, res) {
  try {
   const imageSrcs = await queue.add(async () => {
    const browser = process.env.NODE_ENV === 'production'
-    // ? await puppeteerCore.launch({
     ? await puppeteer.launch({
-     args: chromium.args,
+     args: [...chromium.args, '--no-sandbox'],
      executablePath: await chromium.executablePath,
      headless: chromium.headless,
      ignoreHTTPSErrors: true,
