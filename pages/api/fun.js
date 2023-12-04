@@ -2,7 +2,7 @@
 import pQueue from 'p-queue';
 // import chromium from 'chrome-aws-lambda';
 import puppeteer from 'chrome-aws-lambda';
-import puppeteerDev from 'puppeteer';
+// import puppeteerDev from 'puppeteer';
 
 // Path to the Chrome executable
 // const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
      ignoreHTTPSErrors: true,
      ignoreDefaultArgs: ['--disable-extensions'],
     })
-    : await puppeteerDev.launch({
+    : await puppeteer.launch({
      headless: true,
      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
