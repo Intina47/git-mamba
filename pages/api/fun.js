@@ -32,8 +32,7 @@ export default async function handler(req, res) {
   const imageSrcs = await queue.add(async () => {
    const browser = process.env.NODE_ENV === 'production'
     ? await puppeteer.launch({
-     args: [...puppeteer.args, '--no-sandbox'],
-     executablePath: await puppeteer.executablePath,
+     args: ['--no-sandbox'],
      headless: puppeteer.headless,
      ignoreHTTPSErrors: true,
      ignoreDefaultArgs: ['--disable-extensions'],
