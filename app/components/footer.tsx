@@ -32,7 +32,7 @@ const Footer = () => {
  return (
   <div className="footerm">
    <div className="footer-left">
-    <p className="text-white mb-1">Current Project, Github Latest Commit</p>
+    <p className="text-white mb-1">Current Project, Latest Github Commit</p>
     <p className="text-yellow-500 text-sm">
      <a id='latestrepo' href="https://github.com/Intina47/EE_error" className="no-underline text-current">
       {Commit.latestCommit.slice(0, 12)}
