@@ -277,7 +277,7 @@ const TerminalLayout = () => {
    break;
    //    guesswhat, create a list of animals pick one animal in random from the list and send it to the scrapper for it to get the images
   case 'guesswhat':
-
+// open close
    if (loading) {
     guesswhat = (
      <div>

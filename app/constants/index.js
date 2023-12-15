@@ -47,3 +47,72 @@ export const lsfliles = [
   description: 'My Projects'
  },
 ];
+
+// christmas icons to be display on the background of the terminal in random order
+export const christmasIcons = [
+ {
+  type: 'emoji',
+  name: '🎄',
+  description: 'Christmas Tree'
+ },
+ {
+  type: 'emoji',
+  name: '🎅',
+  description: 'Santa Claus'
+ },
+ {
+  type: 'emoji',
+  name: '🎁',
+  description: 'Wrapped Present'
+ },
+ {
+  type: 'emoji',
+  name: '🔔',
+  description: 'Bell'
+ },
+ {
+  type: 'emoji',
+  name: '🎉',
+  description: 'Party Popper'
+ },
+ {
+  type: 'emoji',
+  name: '🎊',
+  description: 'Confetti Ball'
+ },
+ {
+  type: 'emoji',
+  name: '🎅',
+  description: 'Santa Claus'
+ },
+ {
+  type: 'image',
+  content: '/christmas/christmas-sock.png',
+  description: 'Christmas Sock',
+ },
+ {
+  type: 'image',
+  content: '/christmas/christmas-wreath.png',
+  description: 'Christmas Wreath',
+ },
+ {
+  type: 'image',
+  content: '/christmas/deer.png',
+  description: 'Deer',
+ },
+ {
+  type: 'image',
+  content: '/christmas/snowman.png',
+  description: 'Snowman',
+ },
+ {
+  type: 'image',
+  content: '/christmas/lights.png',
+  description: 'Christmas Lights',
+ },
+ {
+  type: 'image',
+  content: '/christmas/pine.png',
+  description: 'Pine',
+ }
+];
