@@ -58,7 +58,7 @@ const TerminalLayout = () => {
   if (triggerApiCall) {
    setLoading(true); // Set loading state to true initially
 
-   fetch('/api/fun')
+   fetch('/api/randomAnimal')
     .then((response) => {
      if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -277,7 +277,7 @@ const TerminalLayout = () => {
    break;
    //    guesswhat, create a list of animals pick one animal in random from the list and send it to the scrapper for it to get the images
   case 'guesswhat':
-// open close
+   // open close
    if (loading) {
     guesswhat = (
      <div>
