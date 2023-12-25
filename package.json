@@ -26,7 +26,7 @@
     "framer-motion": "^10.16.4",
     "fs.promises": "^0.1.2",
     "ink": "^4.4.1",
-    "isomorphic-git": "^1.25.0",
+    "isomorphic-git": "^1.25.2",
     "markdown-it": "^13.0.1",
     "mongoose": "^8.0.3",
     "next": "^13.5.4",
