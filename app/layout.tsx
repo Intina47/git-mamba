@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import Head from 'next/head';
-import ChristmasIcons from './components/ChristmasIcons';
+// import ChristmasIcons from './components/ChristmasIcons';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,7 +26,7 @@ export default function RootLayout({
    </Head>
    <body className={inter.className}>
     {/* Christmas icons */}
-    <ChristmasIcons />
+    {/* <ChristmasIcons /> */}
     {children}
     <Analytics />
    </body>
