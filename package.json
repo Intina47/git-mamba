@@ -23,7 +23,7 @@
     "classnames": "^2.3.2",
     "dotenv": "^16.3.1",
     "eslint-config-next": "14.0.4",
-    "framer-motion": "^10.16.4",
+    "framer-motion": "^10.17.9",
     "fs.promises": "^0.1.2",
     "ink": "^4.4.1",
     "isomorphic-git": "^1.25.2",
