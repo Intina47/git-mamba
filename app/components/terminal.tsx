@@ -101,8 +101,6 @@ const TerminalLayout = () => {
   });
  },[]);
 
- //   fun.js endpoint
-
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
@@ -202,13 +200,6 @@ const TerminalLayout = () => {
   }
 
   const inputString = (
-   //    <p className='text-white font-mono' key={uniqueKey + '-input'}>
-   //     <span className='text-red-500'>${base[0].privilage}</span>
-   //     <span className='text-yellow-500'>${base[0].connector}</span>
-   //     <span className='text-blue-500'>${base[].username}</span>
-   //     <span className='text-yellow-500'> ~ ${base.endofline} </span>
-   //     {sanitizedInput}
-   //    </p>
    <PromptConfiguration uniqueKey={uniqueKey} sanitizedInput={sanitizedInput} />
   );
   setOutputText((prevOutput) => [...prevOutput, inputString]);
@@ -278,7 +269,6 @@ const TerminalLayout = () => {
    break;
    //    guesswhat, create a list of animals pick one animal in random from the list and send it to the scrapper for it to get the images
   case 'guesswhat':
-   // open close
    if (loading) {
     guesswhat = (
      <div>
