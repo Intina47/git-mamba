@@ -48,6 +48,15 @@ export const lsfliles = [
  },
 ];
 
+// base
+export const promt = [
+ {
+  privilage: 'guest',
+  connector: '@',
+  username: 'mamba.sh',
+  endofline: '$'
+ }
+];
 // christmas icons to be display on the background of the terminal in random order
 export const christmasIcons = [
  {
