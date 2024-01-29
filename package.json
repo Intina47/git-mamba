@@ -27,7 +27,7 @@
     "fs.promises": "^0.1.2",
     "ink": "^4.4.1",
     "isomorphic-git": "^1.25.2",
-    "markdown-it": "^13.0.1",
+    "markdown-it": "^14.0.0",
     "mongoose": "^8.0.3",
     "next": "^13.5.4",
     "p-queue": "^8.0.1",
