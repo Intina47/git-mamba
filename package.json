@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tensorflow-models/mobilenet": "^2.1.1",
-    "@tensorflow/tfjs-node": "^4.15.0",
+    "@tensorflow/tfjs-node": "^4.17.0",
     "@types/node": "20.10.0",
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.18",
