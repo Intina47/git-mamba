@@ -22,6 +22,7 @@ const TerminalLayout = () => {
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
+ const [statsHtml, setstatsHtml] = useState('');
  const [readProjectsFile, setReadProjectsfile] = useState('');
  const [readSkillsFile, setReadSkillsfile] = useState('');
  const [images, setImages] = useState([]);
@@ -101,6 +102,14 @@ const TerminalLayout = () => {
   });
  },[]);
 
+//  stats
+useEffect(() => {
+       fetchMdFiles('/api/languagestats').then((data) => {
+        if (data) {
+         setstatsHtml(data.htmlContent);
+        }
+       });
+      }, []);
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
@@ -400,7 +409,7 @@ const TerminalLayout = () => {
      <p className='text-white font-mono mb-4'>
             I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
      </p>
-     {/* <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} /> */}
+     <div className='mt-2' dangerouslySetInnerHTML={{__html: statsHtml}} />
      <hr className='border-gray-600 my-4' />
      <p className='text-white font-mono'>
             Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
