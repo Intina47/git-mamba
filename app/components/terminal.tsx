@@ -400,7 +400,7 @@ const TerminalLayout = () => {
      <p className='text-white font-mono mb-4'>
             I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
      </p>
-     <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} />
+     {/* <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} /> */}
      <hr className='border-gray-600 my-4' />
      <p className='text-white font-mono'>
             Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
