@@ -102,14 +102,14 @@ const TerminalLayout = () => {
   });
  },[]);
 
-//  stats
-useEffect(() => {
-       fetchMdFiles('/api/languagestats').then((data) => {
-        if (data) {
-         setstatsHtml(data.htmlContent);
-        }
-       });
-      }, []);
+ //  stats
+ useEffect(() => {
+  fetchMdFiles('/api/languagestats').then((data) => {
+   if (data) {
+    setstatsHtml(data.htmlContent);
+   }
+  });
+ }, []);
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
