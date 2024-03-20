@@ -4,10 +4,12 @@ import { useInterval } from '../utils/blinkerIntervals';
 import {isMobileDevice} from '../utils/responsiveness';
 import {fetchMdFiles} from '../utils/fetchmdfiles';
 import BootUpSequence from './bootupSequence';
-import { helpCommands, lsfliles } from '../constants';
+import { helpCommands, lsfliles,promt } from '../constants';
+import PromptConfiguration from './PromptConfiguration';
 import './styles-for-mobile.css';
 import classNames from 'classnames';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import Footer from './footer';
 // env
 import dotenv from 'dotenv';
 dotenv.config();
@@ -17,10 +19,10 @@ const TerminalLayout = () => {
  const [booting, setBooting] = useState(true);
  const [userCount, setUserCount] = useState(0);
  const [lastLoginTime, setLastLoginTime] = useState('');
- //  const [inputValue, setInputValue] = useState('');
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
+ const [statsHtml, setstatsHtml] = useState('');
  const [readProjectsFile, setReadProjectsfile] = useState('');
  const [readSkillsFile, setReadSkillsfile] = useState('');
  const [images, setImages] = useState([]);
@@ -57,7 +59,7 @@ const TerminalLayout = () => {
   if (triggerApiCall) {
    setLoading(true); // Set loading state to true initially
 
-   fetch('/api/fun')
+   fetch('/api/randomAnimal')
     .then((response) => {
      if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -100,8 +102,14 @@ const TerminalLayout = () => {
   });
  },[]);
 
- //   fun.js endpoint
-
+ //  stats
+ useEffect(() => {
+  fetchMdFiles('/api/languagestats').then((data) => {
+   if (data) {
+    setstatsHtml(data.htmlContent);
+   }
+  });
+ }, []);
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
@@ -201,13 +209,7 @@ const TerminalLayout = () => {
   }
 
   const inputString = (
-   <p className='text-white font-mono' key={uniqueKey + '-input'}>
-    <span className='text-red-500'>guest</span>
-    <span className='text-yellow-500'>@</span>
-    <span className='text-blue-500'>mamba.sh</span>
-    <span className='text-yellow-500'> ~ $ </span>
-    {sanitizedInput}
-   </p>
+   <PromptConfiguration uniqueKey={uniqueKey} sanitizedInput={sanitizedInput} />
   );
   setOutputText((prevOutput) => [...prevOutput, inputString]);
 
@@ -276,7 +278,6 @@ const TerminalLayout = () => {
    break;
    //    guesswhat, create a list of animals pick one animal in random from the list and send it to the scrapper for it to get the images
   case 'guesswhat':
-
    if (loading) {
     guesswhat = (
      <div>
@@ -408,7 +409,8 @@ const TerminalLayout = () => {
      <p className='text-white font-mono mb-4'>
             I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
      </p>
-
+     <div className='mt-2' dangerouslySetInnerHTML={{__html: statsHtml}} />
+     <hr className='border-gray-600 my-4' />
      <p className='text-white font-mono'>
             Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
      </p>
@@ -426,10 +428,10 @@ const TerminalLayout = () => {
      <form onSubmit={handleInputSubmit}>
       <div className={classNames('flex items-baseline', { 'mobile-styles': mobile })} ref={endOfTerminalRef}>
        <p className='text-white font-mono'>
-        <span className='text-red-500'>guest</span>
-        <span className='text-yellow-500'>@</span>
-        <span className='text-blue-500'>mamba.sh</span>
-        <span className='text-yellow-500'> ~ $</span>
+        <span className='text-red-500'>{promt[0].privilage}</span>
+        <span className='text-yellow-500'>{promt[0].connector}</span>
+        <span className='text-blue-500'>{promt[0].username}</span>
+        <span className='text-yellow-500'> ~ {promt[0].endofline} </span>
        </p>
        <input
         type='text'
@@ -443,6 +445,8 @@ const TerminalLayout = () => {
        />
       </div>
      </form>
+     <hr className='border-gray-600 my-0 mt-10' />
+     <Footer />
     </>
    )}
   </div>
