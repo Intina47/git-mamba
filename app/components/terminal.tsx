@@ -423,7 +423,7 @@ const TerminalLayout = () => {
             Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
      </p>
      <button
-      className='bg-green-500 text-white px-4 py-2 rounded mt-1 mb-0'
+      className='bg-green-500 text-white px-4 py-2 rounded-tr-lg rounded-tl-lg mt-1 mb-0'
       onClick={handleExploreClick}>
        What inspires Ntina?
      </button>
