@@ -22,7 +22,7 @@ const Inspocard = ({ quote, source, sourceUrl }: { quote: string; source: string
      )}
     </div>
    </div>
-   <div className="absolute inset-x-0 bottom-0 mt-1 h-1/5 bg-gradient-to-b from-teal-500 to-blue-500 animate-pulse"></div>
+   <div className="absolute inset-x-0 bottom-0 mt-1 h-1/5 rounded-bl-lg rounded-br-lg bg-gradient-to-b from-teal-500 to-blue-500 animate-pulse"></div>
   </div>
  );
 };
