@@ -3,12 +3,16 @@ import Inspocard from './inspoComponent';
 
 const InspirationCards = () => {
     const quotes = [
+       {
+        quote: `"You are never too old to set another goal or to dream a new dream."`,
+        source: 'C.S. Lewis', 
+        sourceUrl: 'https://www.britannica.com/biography/C-S-Lewis'
+      },
         {
           quote: `"The mind is everything. What you think you become."`,
           source: 'Buddha',
           sourceUrl: 'https://www.britannica.com/biography/Buddha',
         },
-        { quote: 'Progress.', source: '', sourceUrl: '' },
         { quote: 'Dream Big.', source: '', sourceUrl: '' },
         { quote: 'Stay Positive.', source: '', sourceUrl: '' },
         { quote: 'Believe in Yourself.', source: '', sourceUrl: '' },
