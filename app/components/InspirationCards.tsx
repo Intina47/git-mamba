@@ -4,6 +4,16 @@ import Inspocard from './inspoComponent';
 const InspirationCards = () => {
  const quotes = [
   {
+    quote: '"What i can not create, i do not understand."',
+    source: 'Richard Feynman',
+    sourceUrl: 'https://www.britannica.com/biography/Richard-P-Feynman',
+  },
+  {
+    quote: '"The only way to do great work is to love what you do."',
+    source: 'Steve Jobs',
+    sourceUrl: 'https://www.britannica.com/biography/Steve-Jobs',
+  },
+  {
    quote: '"You are never too old to set another goal or to dream a new dream."',
    source: 'C.S. Lewis',
    sourceUrl: 'https://www.britannica.com/biography/C-S-Lewis'
