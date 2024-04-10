@@ -39,7 +39,7 @@ const TerminalLayout = () => {
  let sanitizedInput = inputValue.trim().toLowerCase();
  let filename = '';
 
-//  quotes
+ //  quotes
  const [showQuotes, setShowQuotes] = useState(false);
 
  // Scroll to the end of the terminal
@@ -60,7 +60,7 @@ const TerminalLayout = () => {
  };
 
  const handleExploreClick = () => {
-       setShowQuotes(!showQuotes);
+  setShowQuotes(!showQuotes);
  };
 
  useEffect(() => {
@@ -422,13 +422,13 @@ const TerminalLayout = () => {
      <p className='text-white font-mono'>
             Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
      </p>
-     <button 
-     className='bg-green-500 text-white px-4 py-2 rounded mt-1 mb-0'
-     onClick={handleExploreClick}>
+     <button
+      className='bg-green-500 text-white px-4 py-2 rounded mt-1 mb-0'
+      onClick={handleExploreClick}>
        What inspires Ntina?
-       </button>
+     </button>
 
-       {showQuotes && <InspirationCards />}
+     {showQuotes && <InspirationCards />}
      <hr className='border-gray-600 my-4 mt-0' />
 
      {/* Display terminal output */}
