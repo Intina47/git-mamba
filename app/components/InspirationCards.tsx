@@ -31,7 +31,7 @@ const InspirationCards = () => {
  ];
 
  return (
-  <div className="flex flex-wrap justify-center gap-4 mt-10">
+  <div className="flex flex-wrap justify-center gap-4 mt-1 mb-1">
    {quotes.map((quote, index) => (
     <Inspocard
      key={index}
