@@ -13,9 +13,6 @@ const InspirationCards = () => {
    source: 'Buddha',
    sourceUrl: 'https://www.britannica.com/biography/Buddha',
   },
-  { quote: 'Dream Big.', source: '', sourceUrl: '' },
-  { quote: 'Stay Positive.', source: '', sourceUrl: '' },
-  { quote: 'Believe in Yourself.', source: '', sourceUrl: '' },
   {
    quote: '"The only person you are destined to become is the person you decide to be."',
    source: 'Ralph Waldo Emerson',
