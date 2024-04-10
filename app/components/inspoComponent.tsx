@@ -16,7 +16,7 @@ const Inspocard = ({ quote, source, sourceUrl }: { quote: string; source: string
     <div className="mt-4 flex items-center justify-between text-sm">
      <span>{source}</span>
      {sourceUrl && (
-      <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-black bg-gradient-to-r from-blue-500 to-blue-500">
+      <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-black bg-inherit">
             Source
       </a>
      )}
