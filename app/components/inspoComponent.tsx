@@ -13,7 +13,7 @@ const Inspocard = ({ quote, source, sourceUrl }: { quote: string; source: string
       {quote}
      </span>
     )}
-    <div className="mt-4 flex items-center justify-between text-sm">
+    <div className="mt-4 flex items-center justify-between text-sm z-10">
      <span>{source}</span>
      {sourceUrl && (
       <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-black bg-inherit">
@@ -22,7 +22,7 @@ const Inspocard = ({ quote, source, sourceUrl }: { quote: string; source: string
      )}
     </div>
    </div>
-   <div className="absolute inset-x-0 bottom-0 mt-1 h-1/5 rounded-bl-lg rounded-br-lg bg-gradient-to-b from-teal-500 to-blue-500 animate-pulse"></div>
+   <div className="absolute inset-x-0 bottom-0 mt-1 h-1/5 rounded-bl-lg rounded-br-lg bg-gradient-to-b from-teal-500 to-blue-500 animate-pulse z-0"></div>
   </div>
  );
 };
