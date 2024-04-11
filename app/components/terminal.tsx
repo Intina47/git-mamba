@@ -42,6 +42,15 @@ const TerminalLayout = () => {
  //  quotes
  const [showQuotes, setShowQuotes] = useState(false);
 
+ //  input field pulses
+ const [firstTimeUser, setFirstTimeUser] = useState(true);
+
+ useEffect(() => {
+  const userHasTypedBefore = localStorage.getItem('userHasTypedBefore');
+  if (userHasTypedBefore) {
+   setFirstTimeUser(false);
+  }
+ }, []);
  // Scroll to the end of the terminal
  const scrollToBottom = () => {
   if (endOfTerminalRef.current) {
@@ -158,6 +167,10 @@ const TerminalLayout = () => {
  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
   const value = e.target.value;
   setInputValue(value);
+  if (firstTimeUser) {
+   setFirstTimeUser(false);
+   localStorage.setItem('userHasTypedBefore', 'true');
+  }
  };
 
  // Add an event listener to listen for the keydown event
@@ -411,21 +424,21 @@ const TerminalLayout = () => {
 
      <hr className='border-gray-600 my-4' />
      <p className='text-gray-600 text-xs font-mono mb-1'>
-            Last login: {lastLoginTime} on {formatUserCount()}{' '}
+                                          Last login: {lastLoginTime} on {formatUserCount()}{' '}
      </p>
      <p className='text-white font-mono'>Hi!</p>
      <p className='text-white font-mono mb-4'>
-            I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
+                                          I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
      </p>
      <div className='mt-2' dangerouslySetInnerHTML={{__html: statsHtml}} />
      <hr className='border-gray-600 my-4' />
      <p className='text-white font-mono'>
-            Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
+                                          Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
      </p>
      <button
       className='bg-green-500 text-white px-4 py-2 rounded-tr-lg rounded-tl-lg mt-1 mb-0'
       onClick={handleExploreClick}>
-       What inspires Ntina?
+                      What inspires Ntina?
      </button>
 
      {showQuotes && <InspirationCards />}
@@ -455,9 +468,13 @@ const TerminalLayout = () => {
         value={inputValue}
         onChange={handleInputChange}
         autoFocus
-        placeholder='type here..'
+        placeholder='type here...'
         autoComplete='off'
        />
+       <div className={classNames('flex items-center', { 'hidden': inputValue !== '' || !firstTimeUser })}>
+        <div className="w-3 h-3 bg-gradient-to-r from-teal-500 to-blue-500  rounded-full animate-ping mx-1"></div>
+        <div className="w-3 h-3 bg-gradient-to-r from-teal-500 to-blue-500  rounded-full animate-ping mx-1"></div>
+       </div>
       </div>
      </form>
      <hr className='border-gray-600 my-0 mt-10' />
