@@ -13,21 +13,6 @@ const InspirationCards = () => {
    source: 'Steve Jobs',
    sourceUrl: 'https://www.britannica.com/biography/Steve-Jobs',
   },
-  {
-   quote: '"You are never too old to set another goal or to dream a new dream."',
-   source: 'C.S. Lewis',
-   sourceUrl: 'https://www.britannica.com/biography/C-S-Lewis'
-  },
-  {
-   quote: '"The mind is everything. What you think you become."',
-   source: 'Buddha',
-   sourceUrl: 'https://www.britannica.com/biography/Buddha',
-  },
-  {
-   quote: '"The only person you are destined to become is the person you decide to be."',
-   source: 'Ralph Waldo Emerson',
-   sourceUrl: 'https://www.britannica.com/biography/Ralph-Waldo-Emerson',
-  },
  ];
 
  return (
