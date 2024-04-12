@@ -24,10 +24,10 @@ const QuoteForm = ({ onSubmit }: QuoteFormProps) => {
  };
 
  const handleFormSubmit = (data: { quote: string, source?: string, sourceUrl?: string }) => {
-    onSubmit(data.quote, data.source, data.sourceUrl);
-    setQuote('');
-    setSource('');
-    setSourceUrl('');
+  onSubmit(data.quote, data.source, data.sourceUrl);
+  setQuote('');
+  setSource('');
+  setSourceUrl('');
  };
 
  return (
