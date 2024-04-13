@@ -226,7 +226,7 @@ const TerminalLayout = () => {
   // If the input contains any blacklisted characters, or any characters that are not whitelisted, return early
   if (containsBlacklistedChars || containsNonWhitelistedChars) {
    errorString = (
-    <p className='text-red-700 font-mono' key={uniqueKey + '-output'}>
+    <p className='text-red-700 font-mono text-xs' key={uniqueKey + '-output'}>
      {sanitizedInputForDisplay}: command not Allowed
     </p>
    );
@@ -417,7 +417,7 @@ const TerminalLayout = () => {
    if (match.bestMatch.rating > 0.1) {
     errorString = (
      <>
-      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+      <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
        {sanitizedInputForDisplay}: command not found
       </p>
       <p className='text-green-500 font-light text-sm'>
