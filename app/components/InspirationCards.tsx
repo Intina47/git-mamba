@@ -4,15 +4,15 @@ import Inspocard from './inspoComponent';
 const InspirationCards = () => {
  const quotes = [
   {
-   quote: '\'Design isn\'t finished until somebody is using it.\'',
-   source: 'Brenda Laurel',
-   sourceUrl: 'Independent Scholar',
-  },
-  {
    quote: '"What i can not create, i do not understand."',
    source: 'Richard Feynman',
    sourceUrl: 'https://www.britannica.com/biography/Richard-P-Feynman',
   },
+  {
+    quote: '\'Design isn\'t finished until somebody is using it.\'',
+    source: 'Brenda Laurel',
+    sourceUrl: 'http://www.tauzero.com/Brenda_Laurel/',
+   },
   {
    quote: '"The only way to do great work is to love what you do."',
    source: 'Steve Jobs',
