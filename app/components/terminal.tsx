@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import stringSimilarity from 'string-similarity';
 import { useInterval } from '../utils/blinkerIntervals';
 import {isMobileDevice} from '../utils/responsiveness';
 import {fetchMdFiles} from '../utils/fetchmdfiles';
@@ -44,6 +45,9 @@ const TerminalLayout = () => {
 
  //  input field pulses
  const [firstTimeUser, setFirstTimeUser] = useState(true);
+
+ const commands = ['help', 'whoami', 'ls', 'email', 'cat', 'clear', 'guesswhat'];
+ const filenames = ['readme.md', 'projects.md', 'skills.md'];
 
  useEffect(() => {
   const userHasTypedBefore = localStorage.getItem('userHasTypedBefore');
@@ -276,7 +280,8 @@ const TerminalLayout = () => {
   case 'ls':
    listOfFiles = (
     <div className='text-white text-sm font-light' key={uniqueKey + '-output'}>
-     <p className='text-sm text-green-500 font-light mb-1'>use cat FILENAME to explore each file below</p>
+     <p className='text-sm text-green-500 font-light mb-1'>use cat FILENAME.md to explore each file below</p>
+      <p className='text-sm text-blue-500 font-light mb-1'>Note: FILENAME is not case sensitive</p>
      <ul className='list-disc list-inside'>
       {lsfliles.map((command, index) => (
        <li key={index}>
@@ -372,12 +377,21 @@ const TerminalLayout = () => {
       </p>
      );
     } else {
-     errorString = (
-      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-       {filename}: Sorry! No such file exists
-       <p className="text-green-500 ml-1">Type <span className='text-yellow-500 px-1 rounded'>&lsquo;ls&lsquo;</span> to see all files available</p>
-      </p>
-     );
+      const filematch = stringSimilarity.findBestMatch(filename, filenames);
+      if (filematch.bestMatch.rating > 0.0) {
+        errorString = (
+          <>
+          <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+              {filename}: Sorry! No such file exists
+          </p>
+          <p className='text-green-500 font-light text-sm'>
+            Did you mean <span className='text-yellow-500'>
+              cat { filematch.bestMatch.target }
+              </span>?
+          </p>
+          </>
+         );
+      }
     }
     setOutputText((prevOutput) => [...prevOutput, errorString]);
    }
@@ -386,18 +400,37 @@ const TerminalLayout = () => {
    clearTerminal();
    break;
   default:
-   errorString = (
-    <><p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-     {sanitizedInputForDisplay}: command not found
-    </p><ul className="list-disc list-inside text-sm font-light mt-1">
-     <h2 className='text-green-500 font-light text-sm'>Try one of the following:</h2>
-     <li><span className='text-yellow-500'>help</span> - discover list of commands to help you get around</li>
+    const match = stringSimilarity.findBestMatch(sanitizedInput, commands);  
+    if (match.bestMatch.rating > 0.0) {
+     errorString = (
+      <>
+      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+          {sanitizedInputForDisplay}: command not found
+      </p>
+      <p className='text-green-500 font-light text-sm'>
+        Did you mean <span className='text-yellow-500'>
+          { match.bestMatch.target }
+          </span>?
+      </p>
+      </>
+     );
+    } else {
+     errorString = (
+      <>
+      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+       {sanitizedInputForDisplay}: command found not
+      </p>
+      <ul className="list-disc list-inside text-sm font-light mt-1">
+      <h2 className='text-green-500 font-light text-sm'>Try one of the following commands:</h2>
+      <li><span className='text-yellow-500'>help</span> - discover list of commands to help you get around</li>
      <li><span className='text-yellow-500'>clear</span> - clear the terminal</li>
-     <li><span className='text-yellow-500'>whoami</span> - learn more about me</li>
-     <li><span className='text-yellow-500'>ls</span> - list of files eg.projects, cv.pdf</li>
-     <li><span className='text-yellow-500'>email</span> - get my email</li>
-    </ul></>
-   );
+      <li><span className='text-yellow-500'>whoami</span> - learn more about me</li>
+      <li><span className='text-yellow-500'>ls</span> - list of files eg.projects, cv.pdf</li>
+      <li><span className='text-yellow-500'>email</span> - get my email</li>
+     </ul>
+      </>
+     );
+    } 
    setOutputText((prevOutput) => [...prevOutput, errorString]);
    break;
   }
