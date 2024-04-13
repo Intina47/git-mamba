@@ -37,11 +37,13 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.51.2",
     "store": "^2.0.12",
+    "string-similarity": "^4.0.4",
     "tailwindcss": "3.3.3",
     "vercel": "^32.5.5"
   },
   "devDependencies": {
     "@types/markdown-it": "^13.0.1",
+    "@types/string-similarity": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.15.0",
     "daisyui": "^3.7.3",
