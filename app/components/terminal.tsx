@@ -365,32 +365,43 @@ const TerminalLayout = () => {
      <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} />
     );
     setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
-   } else if (filename == 'skills.md') {
+   } else if (filename === 'skills.md') {
     aboutmeString = (
      <div className='mt-2' dangerouslySetInnerHTML={{__html: readSkillsFile}} />
     );
     setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
-   }else {
+   } else {
     if(filename === ''){
      errorString = (
-      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-                     Please enter a valid filename
+      <>
+       <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
+         Please enter a valid filename
+       </p>
        <p className="text-green-500 ml-1">Usage example: cat readme.md</p>
-      </p>
+      </>
      );
     } else {
      const filematch = stringSimilarity.findBestMatch(filename, filenames);
-     if (filematch.bestMatch.rating > 0.0) {
+     if (filematch.bestMatch.rating > 0.1) {
       errorString = (
        <>
-        <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+        <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
          {filename}: Sorry! No such file exists
         </p>
-        <p className='text-green-500 font-light text-sm'>
-            Did you mean <span className='text-yellow-500'>
-              cat { filematch.bestMatch.target }
+        <p className='text-green-500 font-light text-sm ml-1'>
+             Did you mean <span className='text-yellow-500'>
+               cat {filematch.bestMatch.target}
          </span>?
         </p>
+       </>
+      );
+     } else {
+      errorString = (
+       <>
+        <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
+         {filename}: Sorry! No such file exists
+        </p>
+        <p className='text-green-500 font-light text-sm ml-1'> please try <span className='text-yellow-500'>ls</span> to see the list of files</p>
        </>
       );
      }
@@ -398,11 +409,12 @@ const TerminalLayout = () => {
     setOutputText((prevOutput) => [...prevOutput, errorString]);
    }
    break;
+
   case 'clear':
    clearTerminal();
    break;
   default:
-   if (match.bestMatch.rating > 0.0) {
+   if (match.bestMatch.rating > 0.1) {
     errorString = (
      <>
       <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
