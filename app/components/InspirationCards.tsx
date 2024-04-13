@@ -9,10 +9,10 @@ const InspirationCards = () => {
    sourceUrl: 'https://www.britannica.com/biography/Richard-P-Feynman',
   },
   {
-    quote: '\'Design isn\'t finished until somebody is using it.\'',
-    source: 'Brenda Laurel',
-    sourceUrl: 'http://www.tauzero.com/Brenda_Laurel/',
-   },
+   quote: '\'Design isn\'t finished until somebody is using it.\'',
+   source: 'Brenda Laurel',
+   sourceUrl: 'http://www.tauzero.com/Brenda_Laurel/',
+  },
   {
    quote: '"The only way to do great work is to love what you do."',
    source: 'Steve Jobs',
