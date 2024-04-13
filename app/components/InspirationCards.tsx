@@ -9,7 +9,7 @@ const InspirationCards = () => {
    sourceUrl: 'https://www.britannica.com/biography/Richard-P-Feynman',
   },
   {
-   quote: '"\'Design isn\'t finished until somebody is using it.\'"',
+   quote: '"Design isn\'t finished until somebody is using it."',
    source: 'Brenda Laurel',
    sourceUrl: 'http://www.tauzero.com/Brenda_Laurel/',
   },
