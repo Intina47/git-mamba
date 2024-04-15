@@ -1,0 +1,16 @@
+{
+    "name": "mamba",
+    "short_name": "mamba",
+    "icons": [
+      {
+        "src": "https://www.bing.com/images/search?view=detailV2&ccid=6%2Bpby990&id=582984D5BBE9815CB2D224443086C5BE00CAA0D2&thid=OIP.6-pby990UQwVi2jJlRZ0agHaEK&mediaurl=https%3A%2F%2Fe0.pxfuel.com%2Fwallpapers%2F589%2F120%2Fdesktop-wallpaper-black-mamba-kobe-mamba-mentality.jpg&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.ebea5bcbdf74510c158b68c99516746a%3Frik%3D0qDKAL7FhjBEJA%26pid%3DImgRaw%26r%3D0&exph=478&expw=850&q=Mamba+Mentality+Movie&simid=608007794608988006&form=IRPRST&ck=EF3DA9D4622F025E0F55097DBFB1C3CE&selectedindex=0&itb=0&ajaxhist=0&ajaxserp=0&pivotparams=insightsToken%3Dccid_pxoe51Ve*cp_2F3B4041FEC9013E48194F8E8EAE7E9C*mid_41CDD37270BB2E48D3D3A378B0A06751F5150704*simid_607990013459955907*thid_OIP.pxoe51VeGVuLSD!_e2LBoNQHaFj&vt=0&sim=11&iss=VSI&ajaxhist=0&ajaxserp=0",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff"
+  }
+  
