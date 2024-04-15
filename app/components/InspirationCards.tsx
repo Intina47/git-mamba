@@ -1,35 +1,38 @@
 import React from 'react';
 import Inspocard from './inspoComponent';
 
+interface Quote {
+    quote: string;
+    source: string;
+    sourceUrl?: string;
+    }
+
 const InspirationCards = () => {
- const quotes = [
-  {
-   quote: '"What i can not create, i do not understand."',
-   source: 'Richard Feynman',
-   sourceUrl: 'https://www.britannica.com/biography/Richard-P-Feynman',
-  },
-  {
-   quote: '"Design isn\'t finished until somebody is using it."',
-   source: 'Brenda Laurel',
-   sourceUrl: 'http://www.tauzero.com/Brenda_Laurel/',
-  },
-  {
-   quote: '"The only way to do great work is to love what you do."',
-   source: 'Steve Jobs',
-   sourceUrl: 'https://www.britannica.com/biography/Steve-Jobs',
-  },
- ];
+ const [quotes, setQuotes] = React.useState<Quote[]>([]);
+ React.useEffect(() => {
+  fetch('/api/get_quotes')
+   .then((res) => res.json())
+   .then((data) => {
+    setQuotes(data);
+   });
+ }, []);
 
  return (
   <div className="flex flex-wrap justify-center gap-4 mt-1 mb-1">
-   {quotes.map((quote, index) => (
-    <Inspocard
-     key={index}
-     quote={quote.quote}
-     source={quote.source}
-     sourceUrl={quote.sourceUrl}
-    />
-   ))}
+   {quotes.length > 0 ? (
+    quotes.map((quote, index) => (
+     <Inspocard
+      key={index}
+      quote={quote.quote}
+      source={quote.source}
+      sourceUrl={quote.sourceUrl}
+     />
+    ))
+   ) : (
+    <div className="text-center text-gray-600">
+                    No quotes available at the moment. Check back later!
+    </div>
+   )}
   </div>
  );
 };
