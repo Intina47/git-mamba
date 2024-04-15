@@ -14,7 +14,6 @@ const animalSchema = new mongoose.Schema({
  },
 });
 
-
 const animalModel = mongoose.models.Animal || mongoose.model('animals', animalSchema);
 
 export { animalModel };
