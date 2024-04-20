@@ -1,10 +1,13 @@
+'use client';
 import React, { useState, useEffect } from 'react';
-import TerminalLayout from './TerminalLayout';
+import TerminalLayout from './components/terminal';
 
 const Home = () => {
  const [showTalkToMe, setShowTalkToMe] = useState(true);
- const [timeoutId, setTimeoutId] = useState(null);
-
+ //  const [timeoutId, setTimeoutId] = useState(null);
+ const [timeoutId, setTimeoutId] = useState<
+    number | NodeJS.Timeout | undefined
+  >(undefined);
  useEffect(() => {
   // Function to hide the "Talk to me" button after 5 seconds of inactivity
   const hideTalkToMe = () => {
