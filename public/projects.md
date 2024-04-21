@@ -4,7 +4,7 @@ In addition to my academic pursuits in computer science, I actively engage in pe
 
 #### 1. Afro Beats Night Club
 
-- *Link:* [Afro Beats Night Club](https://afrobeatsdundee.vercel.app/)
+- *Link:* [Afro Beats Night Club](https://afrobeatsdundee.co.uk/)
 - *Description:* Finalizing the development of a vibrant online platform for Afro Beats Night Club, showcasing the club's music and culture.
 - *Tech Stack:* MongoDB, Next.js, React, Tailwind CSS, JavaScript
 - *Highlights:*
