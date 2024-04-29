@@ -2,7 +2,7 @@ import React from 'react';
 
 const NotesDash = () => {
  return (
-  <div className="mx-auto container py-20 px-6">
+  <div className="mx-auto container py-2 px-6">
    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     <div className="rounded">
      <div className="w-full h-64 flex flex-col justify-between dark:bg-gray-800 bg-white dark:border-gray-700 rounded-lg border border-gray-400 mb-6 py-5 px-4">
