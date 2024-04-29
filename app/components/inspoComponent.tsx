@@ -5,7 +5,7 @@ const Inspocard = ({ quote, source, sourceUrl }: { quote: string; source: string
   <div className="relative bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg overflow-hidden shadow-md hover:shadow-xl">
    <div className="p-6 text-white">
     {quote.length > 30 ? (
-     <p className="text-xl font-bold leading-relaxed">
+     <p className="text-sm font-mono leading-relaxed">
       {quote}
      </p>
     ) : (
@@ -22,7 +22,7 @@ const Inspocard = ({ quote, source, sourceUrl }: { quote: string; source: string
      )}
     </div>
    </div>
-   <div className="absolute inset-x-0 bottom-0 mt-1 h-1/5 rounded-bl-lg rounded-br-lg bg-gradient-to-b from-teal-500 to-blue-500 animate-pulse z-0"></div>
+   <div className="absolute inset-x-0 bottom-0 mt-1 h-1/8 rounded-bl-lg rounded-br-lg bg-gradient-to-b from-teal-500 to-blue-500 animate-pulse z-0"></div>
   </div>
  );
 };
