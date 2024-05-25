@@ -1,5 +1,5 @@
 import React from 'react';
-m;
+
 interface FullScreenNoteProps {
   note: any; // Replace with the type of your note
 }
