@@ -23,28 +23,22 @@
   ul li a {
     color: #38a169;
     text-decoration: none;
-    background-color: aliceblue;
     padding: 0.5rem;
     transition: background-color 0.3s, transform 0.3s;
   }
   a {
-    color: #38a169;
+    color:aliceblue;;
     text-decoration: none;
-    background-color: black;
     padding: 0.5rem;
-    transition: background-color 0.3s, transform 0.3s;
 }
   a #latestrepo{
     text-decoration: none;
-    /* zoom on hover */
     transition: transform 0.3s;
   }
   
   a:hover {
-    color: #38a169;
-    text-decoration: none;
-    background-color: lightblue;
-    transform: scale(1.05);
+    text-decoration: underline;
+    color:aliceblue;
   }
   /* projects.md */
   em {
