@@ -20,19 +20,25 @@
     font-weight: bold;
     color:#7ee787;
   }
-  a {
+  ul li a {
     color: #38a169;
     text-decoration: none;
-    background-color: aliceblue;
     padding: 0.5rem;
     transition: background-color 0.3s, transform 0.3s;
   }
+  a {
+    color:aliceblue;;
+    text-decoration: none;
+    padding: 0.5rem;
+}
+  a #latestrepo{
+    text-decoration: none;
+    transition: transform 0.3s;
+  }
   
   a:hover {
-    color: #38a169;
-    text-decoration: none;
-    background-color: lightblue;
-    transform: scale(1.05);
+    text-decoration: underline;
+    color:aliceblue;
   }
   /* projects.md */
   em {

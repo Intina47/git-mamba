@@ -1,13 +1,17 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import stringSimilarity from 'string-similarity';
 import { useInterval } from '../utils/blinkerIntervals';
 import {isMobileDevice} from '../utils/responsiveness';
 import {fetchMdFiles} from '../utils/fetchmdfiles';
 import BootUpSequence from './bootupSequence';
-import { helpCommands, lsfliles } from '../constants';
+import { helpCommands, lsfliles,promt } from '../constants';
+import PromptConfiguration from './PromptConfiguration';
 import './styles-for-mobile.css';
 import classNames from 'classnames';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import InspirationCards from './InspirationCards';
+import Footer from './footer';
 // env
 import dotenv from 'dotenv';
 dotenv.config();
@@ -17,10 +21,10 @@ const TerminalLayout = () => {
  const [booting, setBooting] = useState(true);
  const [userCount, setUserCount] = useState(0);
  const [lastLoginTime, setLastLoginTime] = useState('');
- //  const [inputValue, setInputValue] = useState('');
  const [outputText, setOutputText] = useState<React.ReactNode[]>([]);
  const endOfTerminalRef = React.useRef<HTMLDivElement>(null);
  const [readReadmeHtml, setReadmeHtml] = useState('');
+ const [statsHtml, setstatsHtml] = useState('');
  const [readProjectsFile, setReadProjectsfile] = useState('');
  const [readSkillsFile, setReadSkillsfile] = useState('');
  const [images, setImages] = useState([]);
@@ -36,6 +40,23 @@ const TerminalLayout = () => {
  let sanitizedInput = inputValue.trim().toLowerCase();
  let filename = '';
 
+ //  quotes
+ const [showQuotes, setShowQuotes] = useState(false);
+
+ //  input field pulses
+ const [firstTimeUser, setFirstTimeUser] = useState(true);
+
+ //  auto recomend commands to the user
+ const commands = ['help', 'whoami', 'ls', 'email', 'cat', 'clear', 'guesswhat'];
+ const filenames = ['readme.md', 'projects.md', 'skills.md'];
+ const match = stringSimilarity.findBestMatch(sanitizedInput, commands);
+
+ useEffect(() => {
+  const userHasTypedBefore = localStorage.getItem('userHasTypedBefore');
+  if (userHasTypedBefore) {
+   setFirstTimeUser(false);
+  }
+ }, []);
  // Scroll to the end of the terminal
  const scrollToBottom = () => {
   if (endOfTerminalRef.current) {
@@ -53,11 +74,15 @@ const TerminalLayout = () => {
   setOutputText([]);
  };
 
+ const handleExploreClick = () => {
+  setShowQuotes(!showQuotes);
+ };
+
  useEffect(() => {
   if (triggerApiCall) {
    setLoading(true); // Set loading state to true initially
 
-   fetch('/api/fun')
+   fetch('/api/randomAnimal')
     .then((response) => {
      if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -100,8 +125,14 @@ const TerminalLayout = () => {
   });
  },[]);
 
- //   fun.js endpoint
-
+ //  stats
+ useEffect(() => {
+  fetchMdFiles('/api/languagestats').then((data) => {
+   if (data) {
+    setstatsHtml(data.htmlContent);
+   }
+  });
+ }, []);
  // Scroll to the end of the terminal when the outputText changes
  useEffect(() => {
   scrollToBottom();
@@ -142,6 +173,10 @@ const TerminalLayout = () => {
  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
   const value = e.target.value;
   setInputValue(value);
+  if (firstTimeUser) {
+   setFirstTimeUser(false);
+   localStorage.setItem('userHasTypedBefore', 'true');
+  }
  };
 
  // Add an event listener to listen for the keydown event
@@ -191,7 +226,7 @@ const TerminalLayout = () => {
   // If the input contains any blacklisted characters, or any characters that are not whitelisted, return early
   if (containsBlacklistedChars || containsNonWhitelistedChars) {
    errorString = (
-    <p className='text-red-700 font-mono' key={uniqueKey + '-output'}>
+    <p className='text-red-700 font-mono text-xs' key={uniqueKey + '-output'}>
      {sanitizedInputForDisplay}: command not Allowed
     </p>
    );
@@ -201,13 +236,7 @@ const TerminalLayout = () => {
   }
 
   const inputString = (
-   <p className='text-white font-mono' key={uniqueKey + '-input'}>
-    <span className='text-red-500'>guest</span>
-    <span className='text-yellow-500'>@</span>
-    <span className='text-blue-500'>mamba.sh</span>
-    <span className='text-yellow-500'> ~ $ </span>
-    {sanitizedInput}
-   </p>
+   <PromptConfiguration uniqueKey={uniqueKey} sanitizedInput={sanitizedInput} />
   );
   setOutputText((prevOutput) => [...prevOutput, inputString]);
 
@@ -253,7 +282,8 @@ const TerminalLayout = () => {
   case 'ls':
    listOfFiles = (
     <div className='text-white text-sm font-light' key={uniqueKey + '-output'}>
-     <p className='text-sm text-green-500 font-light mb-1'>use cat FILENAME to explore each file below</p>
+     <p className='text-sm text-green-500 font-light mb-1'>use cat FILENAME.md to explore each file below</p>
+     <p className='text-sm text-blue-500 font-light mb-1'>Note: FILENAME is not case sensitive</p>
      <ul className='list-disc list-inside'>
       {lsfliles.map((command, index) => (
        <li key={index}>
@@ -276,7 +306,6 @@ const TerminalLayout = () => {
    break;
    //    guesswhat, create a list of animals pick one animal in random from the list and send it to the scrapper for it to get the images
   case 'guesswhat':
-
    if (loading) {
     guesswhat = (
      <div>
@@ -336,46 +365,85 @@ const TerminalLayout = () => {
      <div className='mt-2' dangerouslySetInnerHTML={{__html: readReadmeHtml}} />
     );
     setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
-   } else if (filename == 'skills.md') {
+   } else if (filename === 'skills.md') {
     aboutmeString = (
      <div className='mt-2' dangerouslySetInnerHTML={{__html: readSkillsFile}} />
     );
     setOutputText((prevOutput) => [...prevOutput, aboutmeString]);
-   }else {
+   } else {
     if(filename === ''){
      errorString = (
-      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-                     Please enter a valid filename
+      <>
+       <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
+         Please enter a valid filename
+       </p>
        <p className="text-green-500 ml-1">Usage example: cat readme.md</p>
-      </p>
+      </>
      );
     } else {
-     errorString = (
-      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-       {filename}: Sorry! No such file exists
-       <p className="text-green-500 ml-1">Type <span className='text-yellow-500 px-1 rounded'>&lsquo;ls&lsquo;</span> to see all files available</p>
-      </p>
-     );
+     const filematch = stringSimilarity.findBestMatch(filename, filenames);
+     if (filematch.bestMatch.rating > 0.1) {
+      errorString = (
+       <>
+        <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
+         {filename}: Sorry! No such file exists
+        </p>
+        <p className='text-green-500 font-light text-sm ml-1'>
+             Did you mean <span className='text-yellow-500'>
+               cat {filematch.bestMatch.target}
+         </span>?
+        </p>
+       </>
+      );
+     } else {
+      errorString = (
+       <>
+        <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
+         {filename}: Sorry! No such file exists
+        </p>
+        <p className='text-green-500 font-light text-sm ml-1'> please try <span className='text-yellow-500'>ls</span> to see the list of files</p>
+       </>
+      );
+     }
     }
     setOutputText((prevOutput) => [...prevOutput, errorString]);
    }
    break;
+
   case 'clear':
    clearTerminal();
    break;
   default:
-   errorString = (
-    <><p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
-     {sanitizedInputForDisplay}: command not found
-    </p><ul className="list-disc list-inside text-sm font-light mt-1">
-     <h2 className='text-green-500 font-light text-sm'>Try one of the following:</h2>
-     <li><span className='text-yellow-500'>help</span> - discover list of commands to help you get around</li>
-     <li><span className='text-yellow-500'>clear</span> - clear the terminal</li>
-     <li><span className='text-yellow-500'>whoami</span> - learn more about me</li>
-     <li><span className='text-yellow-500'>ls</span> - list of files eg.projects, cv.pdf</li>
-     <li><span className='text-yellow-500'>email</span> - get my email</li>
-    </ul></>
-   );
+   if (match.bestMatch.rating > 0.1) {
+    errorString = (
+     <>
+      <p className='text-red-500 font-mono text-xs' key={uniqueKey + '-output'}>
+       {sanitizedInputForDisplay}: command not found
+      </p>
+      <p className='text-green-500 font-light text-sm'>
+        Did you mean <span className='text-yellow-500'>
+        { match.bestMatch.target }
+       </span>?
+      </p>
+     </>
+    );
+   } else {
+    errorString = (
+     <>
+      <p className='text-red-500 font-mono' key={uniqueKey + '-output'}>
+       {sanitizedInputForDisplay}: command found not
+      </p>
+      <ul className="list-disc list-inside text-sm font-light mt-1">
+       <h2 className='text-green-500 font-light text-sm'>Try one of the following commands:</h2>
+       <li><span className='text-yellow-500'>help</span> - discover list of commands to help you get around</li>
+       <li><span className='text-yellow-500'>clear</span> - clear the terminal</li>
+       <li><span className='text-yellow-500'>whoami</span> - learn more about me</li>
+       <li><span className='text-yellow-500'>ls</span> - list of files eg.projects, cv.pdf</li>
+       <li><span className='text-yellow-500'>email</span> - get my email</li>
+      </ul>
+     </>
+    );
+   }
    setOutputText((prevOutput) => [...prevOutput, errorString]);
    break;
   }
@@ -402,17 +470,25 @@ const TerminalLayout = () => {
 
      <hr className='border-gray-600 my-4' />
      <p className='text-gray-600 text-xs font-mono mb-1'>
-            Last login: {lastLoginTime} on {formatUserCount()}{' '}
+                                          Last login: {lastLoginTime} on {formatUserCount()}{' '}
      </p>
      <p className='text-white font-mono'>Hi!</p>
      <p className='text-white font-mono mb-4'>
-            I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
+                                          I&apos;m Ntina, am currently a 4th year computing student at the Univerisity of Dundee
      </p>
-
-     <p className='text-white font-mono'>
-            Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
-     </p>
+     <div className='mt-2' dangerouslySetInnerHTML={{__html: statsHtml}} />
      <hr className='border-gray-600 my-4' />
+     <p className='text-white font-mono'>
+                                          Type <span className='text-yellow-500 px-1 rounded'>&lsquo;help&lsquo;</span> to see a list of commands.
+     </p>
+     <button
+      className='bg-green-500 text-white px-4 py-2 rounded-tr-lg rounded-tl-lg mt-1 mb-0'
+      onClick={handleExploreClick}>
+                      What inspires Ntina?
+     </button>
+
+     {showQuotes && <InspirationCards />}
+     <hr className='border-gray-600 my-4 mt-0' />
 
      {/* Display terminal output */}
      <div className='mb-2'>
@@ -426,10 +502,10 @@ const TerminalLayout = () => {
      <form onSubmit={handleInputSubmit}>
       <div className={classNames('flex items-baseline', { 'mobile-styles': mobile })} ref={endOfTerminalRef}>
        <p className='text-white font-mono'>
-        <span className='text-red-500'>guest</span>
-        <span className='text-yellow-500'>@</span>
-        <span className='text-blue-500'>mamba.sh</span>
-        <span className='text-yellow-500'> ~ $</span>
+        <span className='text-red-500'>{promt[0].privilage}</span>
+        <span className='text-yellow-500'>{promt[0].connector}</span>
+        <span className='text-blue-500'>{promt[0].username}</span>
+        <span className='text-yellow-500'> ~ {promt[0].endofline} </span>
        </p>
        <input
         type='text'
@@ -438,11 +514,17 @@ const TerminalLayout = () => {
         value={inputValue}
         onChange={handleInputChange}
         autoFocus
-        placeholder='type here..'
+        placeholder='type here...'
         autoComplete='off'
        />
+       <div className={classNames('flex items-center', { 'hidden': inputValue !== '' || !firstTimeUser })}>
+        <div className="w-3 h-3 bg-gradient-to-r from-teal-500 to-blue-500  rounded-full animate-ping mx-1"></div>
+        <div className="w-3 h-3 bg-gradient-to-r from-teal-500 to-blue-500  rounded-full animate-ping mx-1"></div>
+       </div>
       </div>
      </form>
+     <hr className='border-gray-600 my-0 mt-10' />
+     <Footer />
     </>
    )}
   </div>
